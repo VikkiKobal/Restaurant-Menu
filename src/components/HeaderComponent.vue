@@ -1,0 +1,90 @@
+<template>
+    <header class="header">
+        <div class="logo-text">Cibo gustoso</div>
+
+        <nav class="nav-center">
+            <ul class="nav-links">
+                <li><a href="#">Menu</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <button class="sign-in-btn">Sign In</button>
+    </header>
+</template>
+
+
+<script setup>
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Elsie:wght@900&display=swap');
+
+.header {
+    height: 90px;
+    background-color: #272727;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: relative;
+}
+
+.logo-text {
+    font-family: 'Elsie', cursive;
+    font-weight: 900;
+    font-size: 28px;
+    color: white;
+    z-index: 2;
+}
+
+.nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    line-height: 90px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transition: opacity 0.3s ease;
+}
+
+.nav-links a:hover {
+    opacity: 0.8;
+}
+
+.sign-in-btn {
+    background-color: #ff5c5c;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sign-in-btn:hover {
+    background-color: #e04a4a;
+}
+</style>
