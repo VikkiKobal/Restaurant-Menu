@@ -6,7 +6,7 @@
         <p class="sub-heading">
             We only use the five star quality for our menu, come and get the richness in every meals we serve.
         </p>
-        <button clas s="go-to-menu-btn">Go to Menu</button>
+        <button class="go-to-menu-btn">Go to Menu</button>
     </div>
     <section class="todays-special">
         <img src="@/assets/Vector 2.png" alt="Left arrow" class="arrow arrow-left" />
@@ -54,9 +54,11 @@ $font-button: 'Inter', sans-serif;
 .home {
     position: relative;
     width: 100%;
-    height: 100vh; // повна висота екрану
+    height: 100vh;
     overflow: hidden;
+    background-color: black; /* Додаємо чорний фон */
 }
+
 .main-photo {
     width: 100%;
     height: 100%;
@@ -65,17 +67,30 @@ $font-button: 'Inter', sans-serif;
     display: block;
 }
 
+.main-photo {
+    opacity: 0;
+    transform: scale(1.1);
+    animation: zoomFadeIn 1.5s ease forwards;
+}
+
+@keyframes zoomFadeIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .main-heading {
-    @include heading-style(50px, $color-yellow);
+    @include heading-style(45px, $color-yellow);
     position: absolute;
-    top: 23%;
+    top: 28%;
     left: 50%;
     transform: translate(-50%, -50%);
     white-space: nowrap;
 }
 
 .sub-heading {
-    @include subheading-style(30px, $color-white);
+    @include subheading-style(25px, $color-white);
     position: absolute;
     top: 37%;
     left: 50%;
@@ -85,11 +100,11 @@ $font-button: 'Inter', sans-serif;
 
 .go-to-menu-btn {
     position: absolute;
-    top: 62%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, 0);
     font-family: $font-button;
-    font-size: 32px;
+    font-size: 25px;
     font-weight: 400;
     color: $color-white;
     background-color: rgba(255, 159, 15, 0.15);
@@ -152,10 +167,10 @@ $font-button: 'Inter', sans-serif;
 }
 
 .special-heading {
-    @include heading-style(50px, $color-yellow);
+    @include heading-style(45px, $color-yellow);
 }
 
 .special-subheading {
-    @include subheading-style(30px, $color-white);
+    @include subheading-style(25px, $color-white);
 }
 </style>
