@@ -1,25 +1,85 @@
 <template>
     <div class="home">
-        <img src="@/assets/main-photo.jpg" alt="Main photo" class="main-photo" />
+        <img :src="mainPhoto" alt="Main photo" class="main-photo" />
         <div class="bottom-fade"></div>
         <h1 class="main-heading">Taste the rich flavour of high quality meals</h1>
         <p class="sub-heading">
             We only use the five star quality for our menu, come and get the richness in every meals we serve.
         </p>
-        <button class="go-to-menu-btn">Go to Menu</button>
+        <button class="go-to-menu-btn" @click="scrollToMenu">Go to Menu</button>
     </div>
+
     <section class="todays-special">
-        <img src="@/assets/Vector 2.png" alt="Left arrow" class="arrow arrow-left" />
+        <img :src="vectorLeft" alt="Left arrow" class="arrow arrow-left" />
         <h1 class="special-heading">Today's Special</h1>
         <p class="special-subheading">
             Special menu oftenly comes different everyday,<br />
             this is our special food for today.
         </p>
-        <img src="@/assets/Vector 1.png" alt="Right arrow" class="arrow arrow-right" />
+        <DishList :dishes="category1Dishes" />
+        <img :src="vectorRight" alt="Right arrow" class="arrow arrow-right" />
+    </section>
+    <section class="special-image-section">
+        <img :src="kitchenImage" alt="Special Dish" />
+    </section>
+
+    <section class="specialities-text" ref="menuSection">
+        <h2 class="specialities-heading">Our Specialities</h2>
+        <p class="specialities-subheading">Authentic meals from our restaurant served with high quality ingredients.</p>
+        <CategoryFilter @select="handleCategorySelect" />
+        <DishList :dishes="filteredDishes" />
     </section>
 </template>
 
 <script setup>
+import DishList from '@/components/DishList.vue'
+import CategoryFilter from '@/components/CategoryFilter.vue'
+
+import mainPhoto from '@/assets/main-photo.jpg'
+import vectorLeft from '@/assets/Vector 2.png'
+import vectorRight from '@/assets/Vector 1.png'
+import kitchenImage from '@/assets/kitchen.png'
+
+import { ref, onMounted, computed } from 'vue'
+import axios from 'axios'
+
+const menuSection = ref(null)
+
+function scrollToMenu() {
+    menuSection.value?.scrollIntoView({ behavior: 'smooth' })
+}
+
+const allDishes = ref([])
+const category1Dishes = ref([])
+
+const selectedCategory = ref(null)
+
+const filteredDishes = computed(() =>
+    selectedCategory.value ? allDishes.value.filter((d) => d.category_id === selectedCategory.value) : allDishes.value
+)
+
+function handleCategorySelect(categoryId) {
+    selectedCategory.value = categoryId
+}
+
+onMounted(async () => {
+    try {
+        const response = await axios.get('/api/menu')
+
+        // Лог усіх отриманих даних
+        console.log('Всі страви (response.data):', response.data)
+
+        allDishes.value = response.data
+
+        // Фільтруємо страви за категорією 1
+        category1Dishes.value = allDishes.value.filter((dish) => dish.category_id === 1)
+
+        // Лог відфільтрованих страв
+        console.log('Страви з category_id === 1:', category1Dishes.value)
+    } catch (error) {
+        console.error('Помилка при завантаженні страв:', error)
+    }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -50,13 +110,12 @@ $font-button: 'Inter', sans-serif;
     margin: 0;
 }
 
-/* Основний блок з фото */
 .home {
     position: relative;
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background-color: black; /* Додаємо чорний фон */
+    background-color: black;
 }
 
 .main-photo {
@@ -128,21 +187,21 @@ $font-button: 'Inter', sans-serif;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100px; // висота градієнту — можеш змінити
+    height: 100px;
     pointer-events: none;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
-    z-index: 2; // щоб було поверх фото, але під текстом
+    z-index: 2;
 }
 
 .todays-special {
     position: relative;
     background-color: black;
-    padding: 60px 60px 20px; // зверху більший паддінг, знизу менший
+    padding: 60px 60px 20px;
     text-align: center;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; // текст вгорі
+    justify-content: flex-start;
     align-items: center;
     gap: 20px;
 
@@ -172,5 +231,70 @@ $font-button: 'Inter', sans-serif;
 
 .special-subheading {
     @include subheading-style(25px, $color-white);
+    margin-bottom: 100px;
+}
+
+.special-image-section {
+    width: 100%; /* буде ширина контейнера, без додаткового розширення */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.special-image-section img {
+    width: 100%; // картинка заповнює контейнер по ширині
+    height: auto; // висота адаптивна
+    max-width: 100vw; // не більше ширини вікна браузера
+    object-fit: cover; // якщо хочеш обрізання (опціонально)
+}
+
+.specialities-text {
+    position: relative;
+    background-color: black;
+    text-align: center;
+    padding: 60px 20px 40px;
+    scroll-margin-top: 80px;
+    overflow: hidden;
+}
+
+.specialities-text::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('@/assets/knife.png');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.6) saturate(0.5);
+    opacity: 0.85;
+    z-index: 0;
+}
+
+.specialities-text > * {
+    position: relative;
+    z-index: 1;
+}
+
+.specialities-heading {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 45px;
+    color: #ffc164;
+    margin: 0 0 10px;
+    margin-bottom: 20px;
+}
+
+.specialities-subheading {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 25px;
+    color: white;
+    max-width: 75%;
+    margin: 0 auto;
+}
+
+.main-menu {
+    background-color: black;
+    padding: 60px 20px;
+    height: 100vh;
 }
 </style>

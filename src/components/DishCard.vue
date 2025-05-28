@@ -1,6 +1,6 @@
 <template>
     <div class="dish-card">
-        <img :src="image" alt="Dish image" class="dish-image" />
+        <img :src="imageSrc" alt="Dish image" class="dish-image" />
         <div class="info-overlay">
             <div class="text-block">
                 <h3 class="title">{{ title }}</h3>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const props = defineProps({
     image: String,
@@ -33,13 +33,20 @@ const increase = () => quantity.value++
 const decrease = () => {
     if (quantity.value > 1) quantity.value--
 }
+
+const imageSrc = computed(() => {
+    if (!props.image) return ''
+    if (props.image.startsWith('http')) return props.image
+    return `http://localhost:3000/assets/images/${props.image}`
+})
 </script>
+
 
 <style scoped lang="scss">
 .dish-card {
     position: relative;
-    width: 467px;
-    height: 379px;
+    width: 325px;
+    height: 380px;
     border-radius: 15px;
     overflow: hidden;
 }

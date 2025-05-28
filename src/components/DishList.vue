@@ -12,15 +12,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import DishCard from './DishCard.vue'
 
-const dishes = ref([])
-
-onMounted(async () => {
-    const res = await axios.get('http://localhost:3000/api/dishes')
-    dishes.value = res.data
+defineProps({
+    dishes: {
+        type: Array,
+        required: true,
+    },
 })
 </script>
 
@@ -30,5 +28,6 @@ onMounted(async () => {
     flex-wrap: wrap;
     gap: 30px;
     justify-content: center;
+    margin-bottom: 30px;
 }
 </style>
