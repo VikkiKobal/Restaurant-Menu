@@ -49,13 +49,14 @@ Nam sodales ullamcorper aliquet. Phasellus ut pretium libero, vitae imperdiet pu
     </div>
   </div>
 </section>
-
-
+    <Footer />
 </template>
 
 <script setup>
 import DishList from '@/components/DishList.vue'
 import CategoryFilter from '@/components/CategoryFilter.vue'
+import Footer from '@/components/FooterComponent.vue'
+
 
 import mainPhoto from '@/assets/main-photo.jpg'
 import vectorLeft from '@/assets/Vector 2.png'
@@ -137,13 +138,19 @@ $font-button: 'Inter', sans-serif;
 .home,
 .todays-special,
 .specialities-text,
-.about-section {
+.about-section,
+.footer {
     background-color: black;
     text-align: center;
     padding: 60px 20px;
     color: $color-white;
     position: relative;
 }
+
+.footer {
+    padding: 0;
+}
+
 
 .home {
   height: 100vh;
@@ -308,12 +315,12 @@ $font-button: 'Inter', sans-serif;
 
 .about-section {
   padding-top: 40px;
-  padding-bottom: 40px;
+  padding-bottom: 100px;
 }
 
 .about-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .about-title {
@@ -365,6 +372,7 @@ $font-button: 'Inter', sans-serif;
     margin-top: 12px;
     font-weight: bold;
     color: $color-yellow;
+    text-decoration: none; 
   }
 }
 
