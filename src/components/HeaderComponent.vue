@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <div class="logo-text">Cibo gustoso</div>
+        <RouterLink to="/" class="logo-text">Cibo gustoso</RouterLink>
 
         <nav class="nav-center">
             <ul class="nav-links">
@@ -8,7 +8,7 @@
                 <li><a href="#">News</a></li>
                 <li><a href="#">Gallery</a></li>
                 <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><RouterLink to="/contact">Contact</RouterLink></li>
             </ul>
         </nav>
 
@@ -16,12 +16,13 @@
     </header>
 </template>
 
-
 <script setup>
+import { RouterLink } from 'vue-router'
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Elsie:wght@900&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
 
 .header {
     height: 90px;
@@ -39,6 +40,7 @@
     font-size: 28px;
     color: white;
     z-index: 2;
+    text-decoration: none;
 }
 
 .nav-center {
@@ -56,9 +58,9 @@
 }
 
 .nav-links a {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Satoshi', sans-serif;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 20px;
     color: white;
     text-decoration: none;
     line-height: 90px;
@@ -75,7 +77,7 @@
 .sign-in-btn {
     background-color: #ff5c5c;
     color: white;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Satoshi', sans-serif;
     font-size: 16px;
     border: none;
     padding: 10px 20px;

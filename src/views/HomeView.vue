@@ -112,7 +112,7 @@ $color-yellow: #ffc164;
 $color-white: white;
 $font-heading: 'DM Serif Display', serif;
 $font-subheading: 'DM Sans', sans-serif;
-$font-button: 'Inter', sans-serif;
+$font-button: 'Satoshi', sans-serif;
 
 /* Міксини для заголовків */
 @mixin heading-style($font-size, $color) {
