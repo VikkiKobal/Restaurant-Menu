@@ -29,6 +29,28 @@
         <CategoryFilter @select="handleCategorySelect" />
         <DishList :dishes="filteredDishes" />
     </section>
+
+<section class="about-section">
+  <div class="about-header">
+    <h2 class="about-title">Our Story</h2>
+    <p class="about-subtitle">
+      A journey for making successful luxury restaurant with the best services
+    </p>
+  </div>
+
+  <div class="about-content">
+    <img :src="aboutPhoto" alt="Our Story Photo" class="about-photo" />
+    <div class="about-text">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat urna id leo euismod rhoncus. Aliquam erat volutpat. Nulla id aliquam neque, at dignissim quam. Praesent et lacus accumsan, consequat nisl a, mattis sapien.
+Nam sodales ullamcorper aliquet. Phasellus ut pretium libero, vitae imperdiet purus. Sed sed tincidunt velit. Aliquam vitae ipsum molestie, vehicula nisi quis, finibus leo.
+      </p>
+      <a href="#" class="more-link">More...</a>
+    </div>
+  </div>
+</section>
+
+
 </template>
 
 <script setup>
@@ -39,6 +61,8 @@ import mainPhoto from '@/assets/main-photo.jpg'
 import vectorLeft from '@/assets/Vector 2.png'
 import vectorRight from '@/assets/Vector 1.png'
 import kitchenImage from '@/assets/kitchen.png'
+import aboutPhoto from  '@/assets/about-photo.png'
+
 
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
@@ -107,16 +131,26 @@ $font-button: 'Inter', sans-serif;
     color: $color;
     max-width: 75%;
     text-align: center;
-    margin: 0;
+    margin: 0 auto;
+}
+
+.home,
+.todays-special,
+.specialities-text,
+.about-section {
+    background-color: black;
+    text-align: center;
+    padding: 60px 20px;
+    color: $color-white;
+    position: relative;
 }
 
 .home {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    background-color: black;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0; 
 }
+
 
 .main-photo {
     width: 100%;
@@ -124,9 +158,6 @@ $font-button: 'Inter', sans-serif;
     object-fit: cover;
     filter: brightness(0.6);
     display: block;
-}
-
-.main-photo {
     opacity: 0;
     transform: scale(1.1);
     animation: zoomFadeIn 1.5s ease forwards;
@@ -194,18 +225,13 @@ $font-button: 'Inter', sans-serif;
 }
 
 .todays-special {
-    position: relative;
-    background-color: black;
-    padding: 60px 60px 20px;
-    text-align: center;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-
-    margin-top: 0;
+    padding-bottom: 20px;
 }
 
 .arrow {
@@ -235,66 +261,111 @@ $font-button: 'Inter', sans-serif;
 }
 
 .special-image-section {
-    width: 100%; /* буде ширина контейнера, без додаткового розширення */
+    width: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;
 }
 
 .special-image-section img {
-    width: 100%; // картинка заповнює контейнер по ширині
-    height: auto; // висота адаптивна
-    max-width: 100vw; // не більше ширини вікна браузера
-    object-fit: cover; // якщо хочеш обрізання (опціонально)
+    width: 100%;
+    height: auto;
+    max-width: 100vw;
+    object-fit: cover;
 }
 
 .specialities-text {
-    position: relative;
-    background-color: black;
-    text-align: center;
-    padding: 60px 20px 40px;
     scroll-margin-top: 80px;
     overflow: hidden;
-}
 
-.specialities-text::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('@/assets/knife.png');
-    background-size: cover;
-    background-position: center;
-    filter: brightness(0.6) saturate(0.5);
-    opacity: 0.85;
-    z-index: 0;
-}
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url('@/assets/knife.png');
+        background-size: cover;
+        background-position: center;
+        filter: brightness(0.6) saturate(0.5);
+        opacity: 0.85;
+        z-index: 0;
+    }
 
-.specialities-text > * {
-    position: relative;
-    z-index: 1;
+    > * {
+        position: relative;
+        z-index: 1;
+    }
 }
 
 .specialities-heading {
-    font-family: 'DM Serif Display', serif;
-    font-weight: 400;
-    font-size: 45px;
-    color: #ffc164;
-    margin: 0 0 10px;
+    @include heading-style(45px, $color-yellow);
     margin-bottom: 20px;
 }
 
 .specialities-subheading {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    font-size: 25px;
-    color: white;
-    max-width: 75%;
-    margin: 0 auto;
+    @include subheading-style(25px, $color-white);
+    margin-bottom: 0;
 }
 
-.main-menu {
-    background-color: black;
-    padding: 60px 20px;
-    height: 100vh;
+.about-section {
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
+
+.about-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.about-title {
+  @include heading-style(45px, $color-yellow);
+  margin-bottom: 12px;
+}
+
+.about-subtitle {
+  @include subheading-style(25px, $color-white);
+  line-height: 1.4;
+  margin-bottom: 20px;
+  white-space: nowrap;}
+
+.about-content {
+  display: flex;
+  align-items: center;
+  gap: 120px;
+  justify-content: flex-start;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 20px; /* зменшили відступ контейнера */
+}
+
+.about-photo {
+  width: 55%;
+  max-width: none;
+  border-radius: 8px;
+  object-fit: cover;
+  height: auto;
+  margin-left: -50px; /* ще сильніший зсув вліво */
+}
+
+.about-text {
+  flex: 1;
+  max-width: 400px;
+  color: $color-white;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+
+  p {
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .more-link {
+    align-self: flex-end;
+    margin-top: 12px;
+    font-weight: bold;
+    color: $color-yellow;
+  }
+}
+
 </style>
