@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <button class="reserve-button">Reserve A Table</button>
+            <router-link to="/reserve" class="reserve-button">Reserve A Table</router-link>
 
             <div class="socials">
                 <a href="https://instagram.com" target="_blank" class="social-item">
@@ -143,6 +143,7 @@ $color-yellow: #ffc164;
 
 .reserve-button {
     margin-top: 10px;
+    text-decoration: none;
     margin-bottom: 25px;
     padding: 12px 30px;
     background-color: $color-yellow;

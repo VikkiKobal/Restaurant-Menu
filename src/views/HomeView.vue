@@ -23,7 +23,7 @@
         <img :src="kitchenImage" alt="Special Dish" />
     </section>
 
-    <section class="specialities-text" ref="menuSection">
+    <section class="specialities-text" id="menu" ref="menuSection">
         <h2 class="specialities-heading">Our Specialities</h2>
         <p class="specialities-subheading">Authentic meals from our restaurant served with high quality ingredients.</p>
         <CategoryFilter @select="handleCategorySelect" />
@@ -66,8 +66,12 @@ import aboutPhoto from '@/assets/about-photo.png'
 
 import { ref, onMounted, computed } from 'vue'
 import { useMenuStore } from '@/store/menuStore'
+import { useRoute } from 'vue-router'
+import { watch } from 'vue'
 
 const menuSection = ref(null)
+const route = useRoute()
+
 function scrollToMenu() {
     menuSection.value?.scrollIntoView({ behavior: 'smooth' })
 }
@@ -80,10 +84,23 @@ onMounted(() => {
     menuStore.fetchMenu()
 })
 
-// Страви з категорією 1 (Today’s Special)
+onMounted(() => {
+    if (route.hash === '#menu' && menuSection.value) {
+        menuSection.value.scrollIntoView({ behavior: 'smooth' })
+    }
+})
+
+watch(
+    () => route.hash,
+    (newHash) => {
+        if (newHash === '#menu' && menuSection.value) {
+            menuSection.value.scrollIntoView({ behavior: 'smooth' })
+        }
+    }
+)
+
 const category1Dishes = computed(() => menuStore.getDishesByCategory(1))
 
-// Фільтрація за обраною категорією (Our Specialities)
 const filteredDishes = computed(() =>
     selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
 )

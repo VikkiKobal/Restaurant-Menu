@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ContactPage from '../views/ContactPage.vue'
 import ReserveTable from '../views/ReserveTable.vue'
+import AboutUs from '../views/AboutUs.vue'  // <-- імпорт нової сторінки
 
 const routes = [
     {
@@ -18,12 +19,26 @@ const routes = [
         path: '/reserve',
         name: 'reserve',
         component: ReserveTable
+    },
+    {
+        path: '/about',
+        name: 'about',
+        component: AboutUs   // <-- додано маршрут
     }
 ]
 
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes,
+    scrollBehavior(to) {
+        if (to.hash) {
+            return {
+                el: to.hash,
+                behavior: 'smooth'
+            }
+        }
+        return { top: 0 }
+    }
 })
 
 export default router

@@ -4,9 +4,9 @@
 
         <nav class="nav-center">
             <ul class="nav-links">
-                <li><a href="#">Menu</a></li>
+                <router-link :to="{ path: '/', hash: '#menu' }" class="nav-link">Menu</router-link>
                 <router-link to="/reserve">Reserve A Table</router-link>
-                <li><a href="#">About Us</a></li>
+                <router-link to="/about" class="nav-link">About Us</router-link>
                 <li><RouterLink to="/contact">Contact</RouterLink></li>
             </ul>
         </nav>
