@@ -88,7 +88,7 @@ const awards = ['TRIP ADVISOR', 'MICHELIN GUIDE', 'STAR DINING']
 
         .top-row {
             display: flex;
-            gap: 35px;
+            gap: 20px;
             height: 255px;
 
             .intro-text,

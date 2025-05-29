@@ -23,7 +23,12 @@ const routes = [
     {
         path: '/about',
         name: 'about',
-        component: AboutUs   // <-- додано маршрут
+        component: AboutUs   
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('../views/LoginPage.vue') 
     }
 ]
 

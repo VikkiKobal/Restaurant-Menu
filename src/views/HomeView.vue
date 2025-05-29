@@ -46,7 +46,7 @@
                     libero, vitae imperdiet purus. Sed sed tincidunt velit. Aliquam vitae ipsum molestie, vehicula nisi
                     quis, finibus leo.
                 </p>
-                <a href="#" class="more-link">More...</a>
+                <router-link to="/about" class="more-link">More...</router-link>
             </div>
         </div>
     </section>

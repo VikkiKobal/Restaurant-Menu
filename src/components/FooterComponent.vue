@@ -151,7 +151,7 @@ $color-yellow: #ffc164;
     border: none;
 
     font-size: 18px;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Forum', serif;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 

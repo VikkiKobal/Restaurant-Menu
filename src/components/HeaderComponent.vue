@@ -10,7 +10,7 @@
                 <li><RouterLink to="/contact">Contact</RouterLink></li>
             </ul>
         </nav>
-        <button class="sign-in-btn">Sign In</button>
+        <router-link to="/login"> <button class="sign-in-btn">Sign In</button> </router-link>
     </header>
 </template>
 
