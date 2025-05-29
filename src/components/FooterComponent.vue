@@ -70,7 +70,7 @@ $color-yellow: #ffc164;
 }
 
 .footer-text {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Forum', serif;
     font-weight: 400;
     font-size: 45px;
     line-height: 1.2;
@@ -94,8 +94,8 @@ $color-yellow: #ffc164;
     display: flex;
     align-items: center;
     gap: 12px;
-    font-family: 'DM Serif Display', serif;
-    font-size: 18px;
+    font-family: 'Forum', serif;
+    font-size: 20px;
     color: white;
 }
 
@@ -129,7 +129,7 @@ $color-yellow: #ffc164;
     font-size: 24px;
     color: white;
     margin-bottom: 6px;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Forum', serif;
     font-weight: 500;
     letter-spacing: 1px;
     transition: color 0.3s ease;

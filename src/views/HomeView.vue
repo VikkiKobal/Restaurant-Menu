@@ -30,25 +30,26 @@
         <DishList :dishes="filteredDishes" />
     </section>
 
-<section class="about-section">
-  <div class="about-header">
-    <h2 class="about-title">Our Story</h2>
-    <p class="about-subtitle">
-      A journey for making successful luxury restaurant with the best services
-    </p>
-  </div>
+    <section class="about-section">
+        <div class="about-header">
+            <h2 class="about-title">Our Story</h2>
+            <p class="about-subtitle">A journey for making successful luxury restaurant with the best services</p>
+        </div>
 
-  <div class="about-content">
-    <img :src="aboutPhoto" alt="Our Story Photo" class="about-photo" />
-    <div class="about-text">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat urna id leo euismod rhoncus. Aliquam erat volutpat. Nulla id aliquam neque, at dignissim quam. Praesent et lacus accumsan, consequat nisl a, mattis sapien.
-Nam sodales ullamcorper aliquet. Phasellus ut pretium libero, vitae imperdiet purus. Sed sed tincidunt velit. Aliquam vitae ipsum molestie, vehicula nisi quis, finibus leo.
-      </p>
-      <a href="#" class="more-link">More...</a>
-    </div>
-  </div>
-</section>
+        <div class="about-content">
+            <img :src="aboutPhoto" alt="Our Story Photo" class="about-photo" />
+            <div class="about-text">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat urna id leo euismod
+                    rhoncus. Aliquam erat volutpat. Nulla id aliquam neque, at dignissim quam. Praesent et lacus
+                    accumsan, consequat nisl a, mattis sapien. Nam sodales ullamcorper aliquet. Phasellus ut pretium
+                    libero, vitae imperdiet purus. Sed sed tincidunt velit. Aliquam vitae ipsum molestie, vehicula nisi
+                    quis, finibus leo.
+                </p>
+                <a href="#" class="more-link">More...</a>
+            </div>
+        </div>
+    </section>
     <Footer />
 </template>
 
@@ -57,64 +58,49 @@ import DishList from '@/components/DishList.vue'
 import CategoryFilter from '@/components/CategoryFilter.vue'
 import Footer from '@/components/FooterComponent.vue'
 
-
 import mainPhoto from '@/assets/main-photo.jpg'
 import vectorLeft from '@/assets/Vector 2.png'
 import vectorRight from '@/assets/Vector 1.png'
 import kitchenImage from '@/assets/kitchen.png'
-import aboutPhoto from  '@/assets/about-photo.png'
-
+import aboutPhoto from '@/assets/about-photo.png'
 
 import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
+import { useMenuStore } from '@/store/menuStore'
 
 const menuSection = ref(null)
-
 function scrollToMenu() {
     menuSection.value?.scrollIntoView({ behavior: 'smooth' })
 }
 
-const allDishes = ref([])
-const category1Dishes = ref([])
-
 const selectedCategory = ref(null)
 
+const menuStore = useMenuStore()
+
+onMounted(() => {
+    menuStore.fetchMenu()
+})
+
+// Страви з категорією 1 (Today’s Special)
+const category1Dishes = computed(() => menuStore.getDishesByCategory(1))
+
+// Фільтрація за обраною категорією (Our Specialities)
 const filteredDishes = computed(() =>
-    selectedCategory.value ? allDishes.value.filter((d) => d.category_id === selectedCategory.value) : allDishes.value
+    selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
 )
 
 function handleCategorySelect(categoryId) {
     selectedCategory.value = categoryId
 }
-
-onMounted(async () => {
-    try {
-        const response = await axios.get('/api/menu')
-
-        // Лог усіх отриманих даних
-        console.log('Всі страви (response.data):', response.data)
-
-        allDishes.value = response.data
-
-        // Фільтруємо страви за категорією 1
-        category1Dishes.value = allDishes.value.filter((dish) => dish.category_id === 1)
-
-        // Лог відфільтрованих страв
-        console.log('Страви з category_id === 1:', category1Dishes.value)
-    } catch (error) {
-        console.error('Помилка при завантаженні страв:', error)
-    }
-})
 </script>
+
 
 <style lang="scss" scoped>
 $color-yellow: #ffc164;
 $color-white: white;
-$font-heading: 'DM Serif Display', serif;
-$font-subheading: 'DM Sans', sans-serif;
-$font-button: 'Satoshi', sans-serif;
+$font-heading: 'Forum', serif;
+$font-subheading: 'Forum', sans-serif;
+$font-button: 'Forum', sans-serif;
 
-/* Міксини для заголовків */
 @mixin heading-style($font-size, $color) {
     font-family: $font-heading;
     font-weight: 400;
@@ -151,13 +137,11 @@ $font-button: 'Satoshi', sans-serif;
     padding: 0;
 }
 
-
 .home {
-  height: 100vh;
-  overflow: hidden;
-  padding: 0; 
+    height: 100vh;
+    overflow: hidden;
+    padding: 0;
 }
-
 
 .main-photo {
     width: 100%;
@@ -314,66 +298,66 @@ $font-button: 'Satoshi', sans-serif;
 }
 
 .about-section {
-  padding-top: 40px;
-  padding-bottom: 100px;
+    padding-top: 40px;
+    padding-bottom: 100px;
 }
 
 .about-header {
-  text-align: center;
-  margin-bottom: 50px;
+    text-align: center;
+    margin-bottom: 50px;
 }
 
 .about-title {
-  @include heading-style(45px, $color-yellow);
-  margin-bottom: 12px;
+    @include heading-style(45px, $color-yellow);
+    margin-bottom: 12px;
 }
 
 .about-subtitle {
-  @include subheading-style(25px, $color-white);
-  line-height: 1.4;
-  margin-bottom: 20px;
-  white-space: nowrap;}
+    @include subheading-style(25px, $color-white);
+    line-height: 1.4;
+    margin-bottom: 20px;
+    white-space: nowrap;
+}
 
 .about-content {
-  display: flex;
-  align-items: center;
-  gap: 120px;
-  justify-content: flex-start;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding-left: 20px; /* зменшили відступ контейнера */
+    display: flex;
+    align-items: center;
+    gap: 120px;
+    justify-content: flex-start;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-left: 20px; /* зменшили відступ контейнера */
 }
 
 .about-photo {
-  width: 55%;
-  max-width: none;
-  border-radius: 8px;
-  object-fit: cover;
-  height: auto;
-  margin-left: -50px; /* ще сильніший зсув вліво */
+    width: 55%;
+    max-width: none;
+    border-radius: 8px;
+    object-fit: cover;
+    height: auto;
+    margin-left: -50px; /* ще сильніший зсув вліво */
 }
 
 .about-text {
-  flex: 1;
-  max-width: 400px;
-  color: $color-white;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-
-  p {
-    font-size: 18px;
-    line-height: 1.6;
+    flex: 1;
+    max-width: 400px;
+    color: $color-white;
+    display: flex;
+    flex-direction: column;
     text-align: left;
-  }
 
-  .more-link {
-    align-self: flex-end;
-    margin-top: 12px;
-    font-weight: bold;
-    color: $color-yellow;
-    text-decoration: none; 
-  }
+    p {
+        font-size: 18px;
+        line-height: 1.6;
+        text-align: left;
+    }
+
+    .more-link {
+        align-self: flex-end;
+        margin-top: 12px;
+        font-weight: bold;
+        color: $color-yellow;
+        text-decoration: none;
+    }
 }
-
 </style>

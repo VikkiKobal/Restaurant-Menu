@@ -5,13 +5,11 @@
         <nav class="nav-center">
             <ul class="nav-links">
                 <li><a href="#">Menu</a></li>
-                <li><a href="#">News</a></li>
-                <li><a href="#">Gallery</a></li>
+                <li><a href="#">Reserve a Table</a></li>
                 <li><a href="#">About Us</a></li>
                 <li><RouterLink to="/contact">Contact</RouterLink></li>
             </ul>
         </nav>
-
         <button class="sign-in-btn">Sign In</button>
     </header>
 </template>
@@ -58,9 +56,9 @@ import { RouterLink } from 'vue-router'
 }
 
 .nav-links a {
-    font-family: 'Satoshi', sans-serif;
+    font-family: 'Forum', sans-serif;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 24px;
     color: white;
     text-decoration: none;
     line-height: 90px;
