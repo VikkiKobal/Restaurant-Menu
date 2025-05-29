@@ -5,7 +5,7 @@
         <nav class="nav-center">
             <ul class="nav-links">
                 <li><a href="#">Menu</a></li>
-                <li><a href="#">Reserve a Table</a></li>
+                <router-link to="/reserve">Reserve A Table</router-link>
                 <li><a href="#">About Us</a></li>
                 <li><RouterLink to="/contact">Contact</RouterLink></li>
             </ul>

@@ -247,6 +247,7 @@ function handleSubmit() {
                     textarea {
                         height: 50px;
                         min-height: 50px;
+                        max-height: 80px;
                     }
 
                     button {
