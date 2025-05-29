@@ -88,27 +88,41 @@ $color-yellow: #ffc164;
         form {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            max-width: 400px;
             gap: 15px;
+            align-items: center;
+
+            input,
+            button {
+                width: 400px;
+                box-sizing: border-box; // дуже важливо!
+                padding: 12px;
+                border-radius: 10px;
+                font-size: 18px;
+                font-family: 'Forum', serif;
+            }
 
             input {
-                padding: 12px;
-                border: none;
-                font-size: 16px;
+                border: 1.5px solid rgba(239, 231, 210, 0.15);
+                background: #111;
+                color: #efe7d2;
+
+                &::placeholder {
+                    color: rgba(239, 231, 210, 0.6);
+                }
+
+                &:focus {
+                    outline: none;
+                    border-color: $color-yellow;
+                    background: #222;
+                }
             }
 
             button {
                 margin-top: 10px;
-                text-decoration: none;
                 margin-bottom: 25px;
-                padding: 12px 30px;
                 background-color: $color-yellow;
                 color: black;
-                border: none;
-
-                font-size: 18px;
-                font-family: 'Forum', serif;
+                border: 1.5px solid transparent; // додаємо border, щоб не змінювалася висота
                 cursor: pointer;
                 transition: background-color 0.3s ease, transform 0.2s ease;
 
@@ -118,16 +132,19 @@ $color-yellow: #ffc164;
                 }
             }
         }
-
         .switch-mode {
-            margin-top: 10px;
-            font-size: 18px;
+            font-size: 16px;
+            color: #ccc;
+            text-align: center;
 
             span {
-                margin-left: 5px;
-                color: #efe7d2;
-                text-decoration: underline;
+                color: $color-yellow;
                 cursor: pointer;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: darken($color-yellow, 10%);
+                }
             }
         }
     }
