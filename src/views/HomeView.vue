@@ -127,7 +127,6 @@ $font-button: 'Forum', sans-serif;
     text-align: center;
 }
 
-/* Міксини для підзаголовків */
 @mixin subheading-style($font-size, $color) {
     font-family: $font-subheading;
     font-weight: 400;
@@ -185,8 +184,8 @@ $font-button: 'Forum', sans-serif;
     left: 50%;
     transform: translate(-50%, -50%);
     white-space: normal;
-    max-width: none; // Зняти обмеження ширини
-    overflow: visible; // Щоб не обрізалось, якщо дуже довгий
+    max-width: none;
+    overflow: visible;
 }
 
 .sub-heading {
@@ -345,7 +344,7 @@ $font-button: 'Forum', sans-serif;
     justify-content: flex-start;
     max-width: 1100px;
     margin: 0 auto;
-    padding-left: 20px; /* зменшили відступ контейнера */
+    padding-left: 20px;
 }
 
 .about-photo {
@@ -354,7 +353,7 @@ $font-button: 'Forum', sans-serif;
     border-radius: 8px;
     object-fit: cover;
     height: auto;
-    margin-left: -50px; /* ще сильніший зсув вліво */
+    margin-left: -50px;
 }
 
 .about-text {
@@ -382,17 +381,14 @@ $font-button: 'Forum', sans-serif;
 
 @media (max-width: 1024px) {
     .main-heading {
-        // font-size: 36px !important; // видалено, щоб не зменшувати
         top: 25%;
     }
 
     .sub-heading {
-        // font-size: 20px !important; // видалено
         max-width: 90%;
     }
 
     .go-to-menu-btn {
-        // font-size: 20px !important; // видалено
         padding: 10px 30px !important;
     }
     .todays-special {
@@ -450,8 +446,6 @@ $font-button: 'Forum', sans-serif;
         white-space: normal !important;
     }
 }
-
-/* Мобільні телефони */
 @media (max-width: 600px) {
     .home,
     .todays-special {
@@ -461,7 +455,7 @@ $font-button: 'Forum', sans-serif;
     }
 
     .main-heading {
-        font-size: 40px !important; // залишаємо великий шрифт
+        font-size: 40px !important;
         top: 25% !important;
         padding: 0 10px;
         white-space: normal !important;
@@ -469,10 +463,10 @@ $font-button: 'Forum', sans-serif;
     }
 
     .go-to-menu-btn {
-        font-size: 25px !important; // залишаємо великий шрифт
+        font-size: 25px !important;
         top: 60% !important;
         padding: 12px 40px !important;
-        margin-top: 40px; // додатковий простір зверху
+        margin-top: 40px;
     }
 
     .main-photo {
@@ -481,7 +475,7 @@ $font-button: 'Forum', sans-serif;
     }
 
     .sub-heading {
-        margin-top: 30px; // додатковий простір зверху
+        margin-top: 30px;
         font-size: 25px !important;
         max-width: 100% !important;
         padding: 0 10px;
@@ -490,7 +484,6 @@ $font-button: 'Forum', sans-serif;
     }
 
     .go-to-menu-btn {
-        /* font-size: 18px !important; */
         padding: 8px 25px !important;
     }
 
@@ -503,7 +496,6 @@ $font-button: 'Forum', sans-serif;
     }
 
     .special-subheading {
-        /* font-size: 16px !important; */
         margin-bottom: 30px !important;
     }
 
@@ -532,16 +524,11 @@ $font-button: 'Forum', sans-serif;
     }
 
     .about-subtitle {
-        /* font-size: 18px !important; */
         white-space: normal !important;
     }
 
     .specialities-heading {
         font-size: 40px !important;
-    }
-
-    .specialities-subheading {
-        /* font-size: 16px !important; */
     }
 
     .home {

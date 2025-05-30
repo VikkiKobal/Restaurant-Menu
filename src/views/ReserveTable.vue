@@ -6,7 +6,9 @@
         <div class="right-form">
             <div class="header-text">
                 <h1>RESERVATION</h1>
-                <p>Secure your spot at Qitchen, where exceptional sushi and a <br>remarkable dining experience await.</p>
+                <p>
+                    Secure your spot at Qitchen, where exceptional sushi and a <br />remarkable dining experience await.
+                </p>
             </div>
             <form @submit.prevent="handleSubmit">
                 <input type="text" placeholder="Name" v-model="form.name" required autocomplete="name" />
@@ -58,17 +60,17 @@ function handleSubmit() {
     color: white;
 
     .left-image {
-        flex: 0, 9;
+        flex: 0.9;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 40px;
         margin-bottom: 20px;
+        height: 670px;
 
         img {
             width: 100%;
-            max-width: 960px;
-            max-height: 110%;
+            height: 100%;
             object-fit: cover;
             border-radius: 15px;
         }
@@ -107,8 +109,7 @@ function handleSubmit() {
         form {
             max-width: 600px;
             width: 100%;
-            margin: 0 auto;
-            margin-bottom: 20px;
+            margin: 0 auto 20px;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -159,6 +160,51 @@ function handleSubmit() {
                     transform: scale(1.05);
                 }
             }
+        }
+    }
+
+    // ✅ Адаптація: мобільна версія
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        height: auto;
+
+        .left-image {
+            order: -1;
+            padding: 0;
+            margin: 0;
+
+            img {
+                width: 100%;
+                height: 150px;
+                object-fit: cover;
+                border-radius: 0;
+            }
+        }
+
+        .right-form {
+            margin: 20px;
+            border-radius: 10px;
+            padding: 30px 20px;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .header-text h1 {
+            font-size: 28px;
+        }
+
+        .header-text p {
+            font-size: 16px;
+        }
+
+        .row-inputs {
+            flex-direction: column;
+        }
+
+        form input,
+        form button {
+            font-size: 16px;
         }
     }
 }
