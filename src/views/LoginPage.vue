@@ -33,10 +33,8 @@ const isLogin = ref(true)
 
 const handleSubmit = () => {
     if (isLogin.value) {
-        // логіка входу
         console.log('Login with', email.value, password.value)
     } else {
-        // логіка реєстрації
         console.log('Register with', email.value, password.value)
     }
 }
@@ -80,11 +78,6 @@ $color-yellow: #ffc164;
             color: #ccc;
         }
 
-        h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-
         form {
             display: flex;
             flex-direction: column;
@@ -94,7 +87,7 @@ $color-yellow: #ffc164;
             input,
             button {
                 width: 400px;
-                box-sizing: border-box; // дуже важливо!
+                box-sizing: border-box;
                 padding: 12px;
                 border-radius: 10px;
                 font-size: 18px;
@@ -122,7 +115,7 @@ $color-yellow: #ffc164;
                 margin-bottom: 25px;
                 background-color: $color-yellow;
                 color: black;
-                border: 1.5px solid transparent; // додаємо border, щоб не змінювалася висота
+                border: 1.5px solid transparent;
                 cursor: pointer;
                 transition: background-color 0.3s ease, transform 0.2s ease;
 
@@ -132,6 +125,7 @@ $color-yellow: #ffc164;
                 }
             }
         }
+
         .switch-mode {
             font-size: 16px;
             color: #ccc;
@@ -145,6 +139,91 @@ $color-yellow: #ffc164;
                 &:hover {
                     color: darken($color-yellow, 10%);
                 }
+            }
+        }
+    }
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        height: 100vh;
+
+        .login-image {
+            order: -1;
+            height: 150px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+        }
+
+        .login-form {
+            height: calc(100vh - 150px);
+            padding: 40px 20px;
+            justify-content: center;
+
+            .form-subtitle {
+                font-size: 20px;
+            }
+
+            form {
+                input,
+                button {
+                    width: 300px;
+                    font-size: 18px;
+                    padding: 14px;
+                }
+            }
+
+            .switch-mode {
+                font-size: 20px;
+            }
+        }
+    }
+
+    @media (max-width: 600px) {
+        .login-page {
+            flex-direction: column;
+            height: auto;
+        }
+
+        .login-image {
+            order: -1;
+            height: 150px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+        }
+
+        .login-form {
+            flex: none;
+            height: auto;
+            padding: 30px 15px;
+            gap: 20px;
+            justify-content: flex-start;
+
+            .form-subtitle {
+                font-size: 18px;
+            }
+
+            form {
+                input,
+                button {
+                    width: 300px;
+                    font-size: 18px;
+                    padding: 12px;
+                    max-width: 300px;
+                }
+            }
+
+            .switch-mode {
+                font-size: 18px;
             }
         }
     }

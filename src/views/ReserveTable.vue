@@ -143,6 +143,17 @@ function handleSubmit() {
                 }
             }
 
+            input[type='date'],
+            input[type='time'] {
+                color-scheme: light;
+                color: #efe7d2;
+
+                &::-webkit-calendar-picker-indicator {
+                    filter: invert(1);
+                    cursor: pointer;
+                }
+            }
+
             button {
                 margin-top: 10px;
                 padding: 14px 0;
@@ -163,7 +174,6 @@ function handleSubmit() {
         }
     }
 
-    // ✅ Адаптація: мобільна версія
     @media (max-width: 1024px) {
         flex-direction: column;
         height: auto;
