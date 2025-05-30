@@ -45,12 +45,14 @@ $color-yellow: #ffc164;
 
 .footer {
     position: relative;
-    height: 450px;
     background: url(~@/assets/footer-photo.png) center center/cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+    padding: 60px 20px 60px; // Падінг зверху і знизу замість фіксованої висоти
+    box-sizing: border-box;
+    min-height: 450px; // Мінімальна висота для великих екранів
 }
 
 .overlay {
@@ -64,7 +66,7 @@ $color-yellow: #ffc164;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0 20px;
+    padding: 20px;
     box-sizing: border-box;
     color: white;
 }
@@ -79,6 +81,7 @@ $color-yellow: #ffc164;
     color: white;
     max-width: 700px;
     margin-bottom: 40px;
+    z-index: 1;
 }
 
 .contact-row {
@@ -88,6 +91,7 @@ $color-yellow: #ffc164;
     justify-content: center;
     margin-bottom: 15px;
     flex-wrap: wrap;
+    z-index: 1;
 }
 
 .contact-item {
@@ -112,6 +116,7 @@ $color-yellow: #ffc164;
     justify-content: center;
     margin-top: 16px;
     flex-wrap: wrap;
+    z-index: 1;
 }
 
 .social-item {
@@ -154,10 +159,42 @@ $color-yellow: #ffc164;
     font-family: 'Forum', serif;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 1;
 
     &:hover {
         background-color: darken($color-yellow, 10%);
         transform: scale(1.05);
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-text {
+        font-size: 40px;
+        max-width: 100%;
+        margin-bottom: 30px;
+    }
+
+    .contact-row {
+        gap: 20px;
+    }
+
+    .contact-item {
+        font-size: 18px;
+    }
+
+    .socials {
+        gap: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .social-text {
+        font-size: 18px;
+    }
+
+    .reserve-button {
+        padding: 10px 20px;
+        font-size: 16px;
     }
 }
 </style>

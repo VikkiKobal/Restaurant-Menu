@@ -184,7 +184,9 @@ $font-button: 'Forum', sans-serif;
     top: 28%;
     left: 50%;
     transform: translate(-50%, -50%);
-    white-space: nowrap;
+    white-space: normal;
+    max-width: none; // Зняти обмеження ширини
+    overflow: visible; // Щоб не обрізалось, якщо дуже довгий
 }
 
 .sub-heading {
@@ -375,6 +377,177 @@ $font-button: 'Forum', sans-serif;
         font-weight: bold;
         color: $color-yellow;
         text-decoration: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .main-heading {
+        // font-size: 36px !important; // видалено, щоб не зменшувати
+        top: 25%;
+    }
+
+    .sub-heading {
+        // font-size: 20px !important; // видалено
+        max-width: 90%;
+    }
+
+    .go-to-menu-btn {
+        // font-size: 20px !important; // видалено
+        padding: 10px 30px !important;
+    }
+    .todays-special {
+        height: auto;
+        padding-bottom: 40px !important;
+    }
+
+    .arrow {
+        width: 120px !important;
+        top: 15% !important;
+    }
+
+    .arrow-left {
+        left: 20px !important;
+    }
+
+    .arrow-right {
+        right: 20px !important;
+    }
+
+    .special-heading {
+        font-size: 40px !important;
+    }
+
+    .special-subheading {
+        font-size: 25px !important;
+        margin-bottom: 45px !important;
+    }
+
+    .special-image-section img {
+        max-width: 100% !important;
+    }
+
+    .about-content {
+        flex-direction: column !important;
+        gap: 30px !important;
+        padding-left: 0 !important;
+    }
+
+    .about-photo {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .about-text {
+        max-width: 100% !important;
+    }
+
+    .about-title {
+        font-size: 36px !important;
+    }
+
+    .about-subtitle {
+        font-size: 25px !important;
+        white-space: normal !important;
+    }
+}
+
+/* Мобільні телефони */
+@media (max-width: 600px) {
+    .home,
+    .todays-special {
+        height: 100vh !important;
+        padding-bottom: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .main-heading {
+        font-size: 40px !important; // залишаємо великий шрифт
+        top: 25% !important;
+        padding: 0 10px;
+        white-space: normal !important;
+        word-break: break-word;
+    }
+
+    .go-to-menu-btn {
+        font-size: 25px !important; // залишаємо великий шрифт
+        top: 60% !important;
+        padding: 12px 40px !important;
+        margin-top: 40px; // додатковий простір зверху
+    }
+
+    .main-photo {
+        height: 100vh !important;
+        object-fit: cover;
+    }
+
+    .sub-heading {
+        margin-top: 30px; // додатковий простір зверху
+        font-size: 25px !important;
+        max-width: 100% !important;
+        padding: 0 10px;
+        white-space: normal !important;
+        word-break: break-word;
+    }
+
+    .go-to-menu-btn {
+        /* font-size: 18px !important; */
+        padding: 8px 25px !important;
+    }
+
+    .arrow {
+        display: none !important;
+    }
+
+    .special-heading {
+        font-size: 40px !important;
+    }
+
+    .special-subheading {
+        /* font-size: 16px !important; */
+        margin-bottom: 30px !important;
+    }
+
+    .special-image-section img {
+        max-width: 100% !important;
+    }
+
+    .about-content {
+        flex-direction: column !important;
+        gap: 20px !important;
+        padding-left: 0 !important;
+    }
+
+    .about-photo {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .about-text {
+        max-width: 100% !important;
+        padding: 0 15px;
+    }
+
+    .about-title {
+        font-size: 40px !important;
+    }
+
+    .about-subtitle {
+        /* font-size: 18px !important; */
+        white-space: normal !important;
+    }
+
+    .specialities-heading {
+        font-size: 40px !important;
+    }
+
+    .specialities-subheading {
+        /* font-size: 16px !important; */
+    }
+
+    .home {
+        height: auto !important;
+        overflow: visible !important;
+        padding-bottom: 40px !important;
     }
 }
 </style>
