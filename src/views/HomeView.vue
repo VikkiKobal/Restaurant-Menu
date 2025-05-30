@@ -449,8 +449,7 @@ $font-button: 'Forum', sans-serif;
 @media (max-width: 600px) {
     .home,
     .todays-special {
-        height: 100vh !important;
-        padding-bottom: 0 !important;
+        height: auto !important;
         overflow: hidden !important;
     }
 

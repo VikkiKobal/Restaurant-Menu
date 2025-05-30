@@ -32,7 +32,7 @@ const emit = defineEmits(['select'])
 function handleClick(categoryId) {
     if (selectedCategoryId.value === categoryId) {
         selectedCategoryId.value = null
-        emit('select', null) 
+        emit('select', null)
     } else {
         selectedCategoryId.value = categoryId
         emit('select', categoryId)
