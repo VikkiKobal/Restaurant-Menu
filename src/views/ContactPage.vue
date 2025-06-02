@@ -86,7 +86,7 @@ function handleSubmit() {
     color: white;
 
     .contact-image {
-        flex: 0, 9;
+        flex: 0.9;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -180,7 +180,7 @@ function handleSubmit() {
             .map,
             .get-in-touch {
                 width: 370px;
-                height: 320px; /* Зробили однакову висоту як у top-row */
+                height: 320px;
                 border-radius: 15px;
                 border: 2px solid rgba(239, 231, 210, 0.15);
                 box-sizing: border-box;
@@ -264,6 +264,63 @@ function handleSubmit() {
                         &:hover {
                             background-color: darken(#ffc164, 10%);
                             transform: scale(1.05);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-page {
+        flex-direction: column;
+        height: auto;
+
+        .contact-image {
+            padding: 10px;
+            img {
+                width: 95%;
+                height: 150px;
+                max-width: 100%;
+                border-radius: 10px;
+            }
+        }
+
+        .right-container {
+            padding: 10px 20px;
+            .top-row,
+            .bottom-row {
+                flex-direction: column;
+                height: auto;
+                gap: 15px;
+            }
+
+            .top-row {
+                .opening-hours,
+                .insta-icons {
+                    width: 100%;
+                    height: auto;
+                    padding: 15px;
+                }
+            }
+
+            .bottom-row {
+                .map,
+                .get-in-touch {
+                    width: 100%;
+                    height: auto;
+                    padding: 15px;
+                }
+                .map iframe {
+                    height: 200px;
+                }
+
+                .get-in-touch {
+                    form {
+                        input,
+                        textarea {
+                            width: 93%;
                         }
                     }
                 }

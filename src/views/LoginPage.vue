@@ -9,36 +9,79 @@
                 Your gateway to gourmet best dishes. <br />
                 {{ isLogin ? 'Please log in to continue.' : 'Create an account to join us.' }}
             </p>
+
+            <!-- ✅ Повідомлення успіху -->
+            <p v-if="message" class="success-message">{{ message }}</p>
+
+            <!-- ❌ Повідомлення про помилку -->
+            <p v-if="error" class="error-message">{{ error }}</p>
+
             <form @submit.prevent="handleSubmit">
                 <input type="email" v-model="email" placeholder="Email" required />
                 <input type="password" v-model="password" placeholder="Password" required />
 
-                <button type="submit">{{ isLogin ? 'Login' : 'Register' }}</button>
+                <button type="submit">
+                    {{ isLogin ? 'Login' : 'Register' }}
+                </button>
             </form>
 
             <p class="switch-mode">
                 {{ isLogin ? "Don't have an account?" : 'Already have an account?' }}
-                <span @click="isLogin = !isLogin">{{ isLogin ? 'Register' : 'Login' }}</span>
+                <span @click="isLogin = !isLogin">
+                    {{ isLogin ? 'Register' : 'Login' }}
+                </span>
             </p>
         </div>
     </div>
 </template>
 
+
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
+import { useUserStore } from '@/store/user'
 
 const email = ref('')
 const password = ref('')
 const isLogin = ref(true)
+const message = ref('')
+const error = ref('')
 
-const handleSubmit = () => {
-    if (isLogin.value) {
-        console.log('Login with', email.value, password.value)
-    } else {
-        console.log('Register with', email.value, password.value)
+const userStore = useUserStore()
+
+const handleSubmit = async () => {
+    message.value = ''
+    error.value = ''
+
+    try {
+        if (isLogin.value) {
+            const res = await axios.post('http://localhost:3000/api/auth/login', {
+                email: email.value,
+                password: password.value,
+            })
+
+            // ✅ Новий підхід — зберігаємо токен і user
+            const { token, user } = res.data
+            userStore.setAuthData(token, user)
+
+            message.value = 'Login successful!'
+        } else {
+            const res = await axios.post('http://localhost:3000/api/auth/register', {
+                email: email.value,
+                password: password.value,
+            })
+
+            message.value = res.data.message
+        }
+    } catch (err) {
+        error.value = err.response?.data?.message || 'Something went wrong'
     }
 }
 </script>
+
+
+
+
 
 <style scoped lang="scss">
 $color-yellow: #ffc164;
@@ -141,6 +184,16 @@ $color-yellow: #ffc164;
                 }
             }
         }
+    }
+
+    .success-message {
+        color: #2e7d32;
+        margin-bottom: 1rem;
+    }
+
+    .error-message {
+        color: #c62828;
+        margin-bottom: 1rem;
     }
 
     @media (max-width: 1024px) {

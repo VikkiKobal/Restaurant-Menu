@@ -3,9 +3,13 @@
         <RouterLink to="/" class="logo-text">Cibo gustoso</RouterLink>
 
         <div class="login-desktop">
-            <RouterLink to="/login">
-                <button class="sign-in-btn">Sign In</button>
-            </RouterLink>
+            <template v-if="isLoggedIn">
+                <RouterLink v-if="isAdmin" to="/admin" class="add-dish-button">Add New Dish</RouterLink>
+                <button class="sign-in-btn" @click="logout">Logout</button>
+            </template>
+            <template v-else>
+                <RouterLink to="/login" class="sign-in-btn">Sign In</RouterLink>
+            </template>
         </div>
 
         <button class="burger" @click="toggleMenu">
@@ -16,25 +20,51 @@
 
         <nav :class="['nav-center', { open: isOpen }]">
             <ul class="nav-links">
-                <router-link :to="{ path: '/', hash: '#menu' }" class="nav-link" @click="closeMenu">Menu</router-link>
-                <router-link to="/reserve" class="nav-link" @click="closeMenu">Reserve A Table</router-link>
-                <router-link to="/about" class="nav-link" @click="closeMenu">About Us</router-link>
-                <li><RouterLink to="/contact" class="nav-link" @click="closeMenu">Contact</RouterLink></li>
+                <li>
+                    <RouterLink :to="{ path: '/', hash: '#menu' }" class="nav-link" @click="closeMenu">Menu</RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/reserve" class="nav-link" @click="closeMenu">Reserve A Table</RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/about" class="nav-link" @click="closeMenu">About Us</RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/contact" class="nav-link" @click="closeMenu">Contact</RouterLink>
+                </li>
                 <li class="login-mobile">
-                    <RouterLink to="/login" @click="closeMenu">
-                        <button class="sign-in-btn">Sign In</button>
-                    </RouterLink>
+                    <template v-if="isLoggedIn">
+                        <button class="sign-in-btn" @click="logout">Logout</button>
+                    </template>
+                    <template v-else>
+                        <RouterLink to="/login" @click="closeMenu" class="sign-in-btn">Sign In</RouterLink>
+                    </template>
                 </li>
             </ul>
         </nav>
     </header>
 </template>
 
-
-
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useUserStore } from '@/store/user'
+import { storeToRefs } from 'pinia'
+
+const userStore = useUserStore()
+const { isLoggedIn, isAdmin, user, token } = storeToRefs(userStore)
+
+watchEffect(() => {
+    console.log('User from store:', user.value)
+    console.log('Token from store:', token.value)
+    console.log('isLoggedIn:', isLoggedIn.value)
+    console.log('isAdmin:', isAdmin.value)
+})
+
+const logout = () => {
+    userStore.logout()
+    closeMenu()
+}
 
 const isOpen = ref(false)
 
@@ -45,23 +75,11 @@ const toggleMenu = () => {
 const closeMenu = () => {
     isOpen.value = false
 }
-
-const handleClickOutside = (event) => {
-    const menu = document.querySelector('.nav-center')
-    const burger = document.querySelector('.burger')
-    if (isOpen.value && !menu.contains(event.target) && !burger.contains(event.target)) {
-        closeMenu()
-    }
-}
-
-onMounted(() => {
-    document.addEventListener('click', handleClickOutside)
-})
-
-onBeforeUnmount(() => {
-    document.removeEventListener('click', handleClickOutside)
-})
 </script>
+
+
+
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Elsie:wght@900&display=swap');
@@ -87,6 +105,7 @@ onBeforeUnmount(() => {
     font-size: 28px;
     color: white;
     text-decoration: none;
+    z-index: 30;
 }
 
 .nav-center {
@@ -103,23 +122,21 @@ onBeforeUnmount(() => {
     padding: 0;
 }
 
-.nav-links a {
+.nav-link {
     font-family: 'Forum', sans-serif;
     font-size: 24px;
     color: white;
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    height: 100%;
     transition: opacity 0.3s ease;
 }
 
-.nav-links a:hover {
+.nav-link:hover {
     opacity: 0.8;
 }
 
 .sign-in-btn {
     background-color: #ff5c5c;
+    text-decoration: none;
     color: white;
     font-family: 'Satoshi', sans-serif;
     font-size: 16px;
@@ -134,6 +151,23 @@ onBeforeUnmount(() => {
     background-color: #e04a4a;
 }
 
+.add-dish-button {
+    background-color: #4caf50;
+    text-decoration: none;
+    color: white;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 16px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-dish-button:hover {
+    background-color: #3e8e41;
+}
+
 .burger {
     display: none;
     flex-direction: column;
@@ -141,7 +175,7 @@ onBeforeUnmount(() => {
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 15;
+    z-index: 31;
 }
 
 .burger span {
@@ -164,13 +198,15 @@ onBeforeUnmount(() => {
 .burger span.open:nth-child(3) {
     transform: rotate(-45deg) translate(6px, -6px);
 }
+
 .login-desktop {
     display: none;
 }
 
 @media (min-width: 769px) {
     .login-desktop {
-        display: block;
+        display: flex;
+        gap: 10px;
     }
     .login-mobile {
         display: none;
@@ -184,12 +220,11 @@ onBeforeUnmount(() => {
         left: 0;
         width: 100%;
         background-color: #272727;
-        transform: none;
-        flex-direction: column;
+        padding: 20px 0;
         display: none;
+        flex-direction: column;
+        align-items: center;
         z-index: 25;
-        padding: 20px 0;
-        margin: 0;
     }
 
     .nav-center.open {
@@ -198,66 +233,17 @@ onBeforeUnmount(() => {
 
     .nav-links {
         flex-direction: column;
-        align-items: center;
         gap: 20px;
-        padding: 20px 0;
     }
 
-    .nav-links a {
+    .nav-link {
         font-size: 20px;
-        line-height: normal;
     }
 
     .burger {
         display: flex;
     }
 
-    .login-desktop {
-        display: none;
-    }
-}
-
-@media (max-width: 1024px) {
-    .nav-center {
-        position: fixed !important;
-        top: 90px;
-        left: 0 !important;
-        width: 100% !important;
-        transform: none !important;
-        padding: 20px;
-        display: none;
-        flex-direction: column;
-        background-color: #272727;
-        z-index: 20;
-    }
-
-    .nav-center.open {
-        display: flex;
-        flex-direction: column;
-        position: fixed;
-        top: 90px;
-        left: 0;
-        width: 100%;
-        background-color: #272727;
-        padding: 20px;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .burger {
-        position: absolute;
-        right: 20px;
-        top: 30px;
-        display: flex;
-    }
-
-    .login-desktop {
-        display: none;
-    }
     .login-mobile {
         display: block;
     }
@@ -266,7 +252,6 @@ onBeforeUnmount(() => {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        top: 30px;
     }
 }
 </style>
