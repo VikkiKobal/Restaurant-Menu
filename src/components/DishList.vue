@@ -4,7 +4,7 @@
             v-for="dish in dishes"
             :key="dish.id"
             :image="dish.image_url"
-            :title="dish.title"
+            :title="dish.name"
             :description="dish.description"
             :price="dish.price"
         />

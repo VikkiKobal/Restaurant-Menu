@@ -35,12 +35,13 @@ const decrease = () => {
 }
 
 const imageSrc = computed(() => {
-    if (!props.image) return ''
+    if (!props.image) return '/assets/placeholder.png' // Fallback image
     if (props.image.startsWith('http')) return props.image
-    return `http://localhost:3000/assets/images/${props.image}`
+    // Handle paths starting with /assets/images/
+    const cleanPath = props.image.replace(/^\/assets\/images\//, '')
+    return `http://localhost:3000/assets/images/${cleanPath}`
 })
 </script>
-
 
 <style scoped lang="scss">
 .dish-card {
