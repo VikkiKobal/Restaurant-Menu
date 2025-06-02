@@ -24,6 +24,7 @@ export const useMenuStore = defineStore('menu', {
                 this.isLoading = false
             }
         },
+
         async addDish(newDish) {
             try {
                 const res = await axios.post('/api/menu', newDish)
@@ -32,17 +33,44 @@ export const useMenuStore = defineStore('menu', {
                 this.error = err
             }
         },
+
         async updateDish(id, updatedDish) {
             try {
-                await axios.put(`/api/menu/${id}`, updatedDish)
+                const res = await axios.put(`/api/menu/${id}`, updatedDish)
                 const index = this.allDishes.findIndex(d => d.id === id)
                 if (index !== -1) {
-                    this.allDishes[index] = { ...this.allDishes[index], ...updatedDish }
+                    this.allDishes[index] = { ...this.allDishes[index], ...res.data }
                 }
             } catch (err) {
                 this.error = err
             }
         },
+
+        async addDishWithFile(formData) {
+            try {
+                const res = await axios.post('/api/menu/menu-items/upload', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                })
+                this.allDishes.push(res.data)
+            } catch (err) {
+                this.error = err
+            }
+        },
+
+        async updateDishWithFile(id, formData) {
+            try {
+                const res = await axios.put(`/api/menu/menu-items/upload/${id}`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                })
+                const index = this.allDishes.findIndex(d => d.id === id)
+                if (index !== -1) {
+                    this.allDishes[index] = { ...this.allDishes[index], ...res.data }
+                }
+            } catch (err) {
+                this.error = err
+            }
+        },
+
         async deleteDish(id) {
             try {
                 await axios.delete(`/api/menu/${id}`)

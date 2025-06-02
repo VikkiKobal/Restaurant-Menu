@@ -3,11 +3,12 @@
         <button @click="showAddForm = true" class="add-button">+ Add New Dish</button>
 
         <div v-if="showAddForm || editDish" class="form-wrapper">
-            <form @submit.prevent="submitForm">
+            <form @submit.prevent="submitForm" enctype="multipart/form-data">
                 <input v-model="form.name" placeholder="Name" required />
                 <input v-model.number="form.price" type="number" placeholder="Price" required />
                 <textarea v-model="form.description" placeholder="Description"></textarea>
-                <input v-model="form.image_url" type="text" placeholder="Image URL" />
+
+                <input type="file" @change="handleFileUpload" />
 
                 <label>
                     <input type="checkbox" v-model="form.is_available" />
@@ -15,7 +16,6 @@
                 </label>
 
                 <input v-model.number="form.category_id" type="number" placeholder="Category ID" />
-
                 <input v-model="form.special_category" type="text" placeholder="Special Category" />
 
                 <button type="submit">{{ editDish ? 'Update' : 'Add' }}</button>
@@ -47,19 +47,22 @@
     </div>
 </template>
 
-
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useMenuStore } from '@/store/menuStore'
 
 const menuStore = useMenuStore()
+const selectedFile = ref(null)
+
+const handleFileUpload = (event) => {
+    selectedFile.value = event.target.files[0]
+}
 
 const dishes = ref([])
 const form = ref({
     name: '',
     price: 0,
     description: '',
-    image_url: '',
     is_available: true,
     category_id: null,
     special_category: '',
@@ -75,34 +78,101 @@ const loadDishes = async () => {
 onMounted(loadDishes)
 
 const submitForm = async () => {
-    if (editDish.value) {
-        await menuStore.updateDish(editDish.value.id, form.value)
-    } else {
-        await menuStore.addDish(form.value)
+    try {
+        if (editDish.value) {
+            // Update mode
+            if (selectedFile.value) {
+                // Update with file
+                const formData = new FormData()
+                formData.append('name', form.value.name)
+                formData.append('price', form.value.price)
+                formData.append('description', form.value.description || '')
+                formData.append('is_available', form.value.is_available)
+                formData.append('category_id', form.value.category_id || '')
+                formData.append('special_category', form.value.special_category || '')
+                formData.append('image', selectedFile.value)
+
+                await menuStore.updateDishWithFile(editDish.value.id, formData)
+            } else {
+                // Update without file
+                const updatedDish = {
+                    name: form.value.name,
+                    price: form.value.price,
+                    description: form.value.description || null,
+                    is_available: form.value.is_available,
+                    category_id: form.value.category_id || null,
+                    special_category: form.value.special_category || null,
+                }
+                await menuStore.updateDish(editDish.value.id, updatedDish)
+            }
+        } else {
+            // Add mode
+            if (selectedFile.value) {
+                // Add with file
+                const formData = new FormData()
+                formData.append('name', form.value.name)
+                formData.append('price', form.value.price)
+                formData.append('description', form.value.description || '')
+                formData.append('is_available', form.value.is_available)
+                formData.append('category_id', form.value.category_id || '')
+                formData.append('special_category', form.value.special_category || '')
+                formData.append('image', selectedFile.value)
+
+                await menuStore.addDishWithFile(formData)
+            } else {
+                // Add without file
+                const newDish = {
+                    name: form.value.name,
+                    price: form.value.price,
+                    description: form.value.description || null,
+                    is_available: form.value.is_available,
+                    category_id: form.value.category_id || null,
+                    special_category: form.value.special_category || null,
+                }
+                await menuStore.addDish(newDish)
+            }
+        }
+
+        await loadDishes()
+        resetForm()
+    } catch (err) {
+        console.error('Error submitting form:', err)
+        alert('Error: ' + err.message)
     }
-    await loadDishes()
-    resetForm()
 }
 
 const startEdit = (dish) => {
     editDish.value = dish
-    form.value = { ...dish }
+    form.value = {
+        name: dish.name,
+        price: dish.price,
+        description: dish.description || '',
+        is_available: dish.is_available,
+        category_id: dish.category_id,
+        special_category: dish.special_category || '',
+    }
+    selectedFile.value = null
     showAddForm.value = true
 }
 
 const deleteDish = async (id) => {
-    await menuStore.deleteDish(id)
-    await loadDishes()
+    try {
+        await menuStore.deleteDish(id)
+        await loadDishes()
+    } catch (err) {
+        console.error('Error deleting dish:', err)
+        alert('Error: ' + err.message)
+    }
 }
 
 const resetForm = () => {
     showAddForm.value = false
     editDish.value = null
+    selectedFile.value = null
     form.value = {
         name: '',
         price: 0,
         description: '',
-        image_url: '',
         is_available: true,
         category_id: null,
         special_category: '',
