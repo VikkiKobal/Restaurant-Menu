@@ -23,13 +23,20 @@ const routes = [
     {
         path: '/about',
         name: 'about',
-        component: AboutUs   
+        component: AboutUs
     },
     {
         path: '/login',
         name: 'login',
-        component: () => import('../views/LoginPage.vue') 
+        component: () => import('../views/LoginPage.vue')
+    },
+    {
+        path: '/admin',
+        name: 'AdminPanel',
+        component: () => import('@/views/AdminPanel.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true }
     }
+
 ]
 
 const router = createRouter({
