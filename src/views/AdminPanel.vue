@@ -25,7 +25,6 @@
         <table class="dish-table">
             <thead>
                 <tr>
-                    <th>Image</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Price ($)</th>
@@ -34,15 +33,6 @@
             </thead>
             <tbody>
                 <tr v-for="dish in dishes" :key="dish.id">
-                    <td>
-                        <img
-                            v-if="dish.image_url"
-                            :src="imageUrl(dish.image_url)"
-                            alt="Dish Image"
-                            style="max-width: 100px; max-height: 100px"
-                        />
-                        <span v-else>No Image</span>
-                    </td>
                     <td>{{ dish.name }}</td>
                     <td>{{ dish.description }}</td>
                     <td>{{ dish.price.toFixed(2) }}</td>
@@ -84,10 +74,6 @@ const form = ref({
 })
 const showAddForm = ref(false)
 const editDish = ref(null)
-
-const imageUrl = (path) => {
-    return path ? `http://localhost:3000${path}` : ''
-}
 
 const loadDishes = async () => {
     await menuStore.fetchMenu()
