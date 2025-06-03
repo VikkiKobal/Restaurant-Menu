@@ -50,9 +50,9 @@ $color-yellow: #ffc164;
     justify-content: center;
     align-items: center;
     color: white;
-    padding: 60px 20px 60px; // Падінг зверху і знизу замість фіксованої висоти
+    padding: 60px 20px;
     box-sizing: border-box;
-    min-height: 450px; // Мінімальна висота для великих екранів
+    min-height: 450px;
 }
 
 .overlay {
@@ -106,7 +106,8 @@ $color-yellow: #ffc164;
 .icon {
     width: 30px;
     height: 40px;
-    filter: $color-yellow;
+    filter: brightness(0) saturate(100%) invert(78%) sepia(37%) saturate(436%) hue-rotate(351deg) brightness(101%)
+        contrast(101%); /* Matches $color-yellow */
 }
 
 .socials {
@@ -154,7 +155,6 @@ $color-yellow: #ffc164;
     background-color: $color-yellow;
     color: black;
     border: none;
-
     font-size: 18px;
     font-family: 'Forum', serif;
     cursor: pointer;
@@ -167,15 +167,21 @@ $color-yellow: #ffc164;
     }
 }
 
+/* Media query for screens <= 600px */
 @media (max-width: 600px) {
+    .footer {
+        min-height: 400px; /* Reduced min-height for mobile */
+        padding: 40px 15px;
+    }
+
     .footer-text {
-        font-size: 40px;
-        max-width: 100%;
-        margin-bottom: 30px;
+        font-size: 32px; /* Reduced font size for better mobile fit */
+        margin-bottom: 25px;
     }
 
     .contact-row {
         gap: 20px;
+        margin-bottom: 10px;
     }
 
     .contact-item {
@@ -183,9 +189,9 @@ $color-yellow: #ffc164;
     }
 
     .socials {
-        gap: 20px;
-        margin-top: 20px;
-        margin-bottom: 20px;
+        gap: 30px;
+        margin-top: 10px;
+        margin-bottom: 15px;
     }
 
     .social-text {
@@ -195,6 +201,43 @@ $color-yellow: #ffc164;
     .reserve-button {
         padding: 10px 20px;
         font-size: 16px;
+    }
+}
+
+/* Additional media query for very small screens (<= 400px) */
+@media (max-width: 400px) {
+    .footer {
+        min-height: 350px; /* Further reduced for smaller screens */
+        padding: 30px 10px;
+    }
+
+    .footer-text {
+        font-size: 28px; /* Even smaller font for tiny screens */
+        margin-bottom: 20px;
+    }
+
+    .contact-row {
+        gap: 15px;
+        flex-direction: column; /* Stack contact items vertically */
+    }
+
+    .contact-item {
+        font-size: 16px;
+    }
+
+    .socials {
+        gap: 20px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .social-text {
+        font-size: 16px;
+    }
+
+    .reserve-button {
+        padding: 8px 15px;
+        font-size: 14px;
     }
 }
 </style>
