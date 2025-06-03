@@ -15,7 +15,7 @@
                 <input v-model.number="form.category_id" type="number" placeholder="Category ID" />
                 <label>
                     <input type="checkbox" v-model="form.is_special" />
-                    Спеціальне
+                    Special
                 </label>
                 <button type="submit">{{ editDish ? 'Update' : 'Add' }}</button>
                 <button type="button" @click="resetForm">Cancel</button>
@@ -118,7 +118,7 @@ const submitForm = async () => {
             description: form.value.description || null,
             is_available: form.value.is_available,
             category_id: form.value.category_id || null,
-            special_category: form.value.is_special ? 1 : 0,
+            is_special: form.value.is_special ? 1 : 0, // Зміна з special_category на is_special
         }
 
         if (editDish.value) {
@@ -129,7 +129,7 @@ const submitForm = async () => {
                 formData.append('description', dishData.description || '')
                 formData.append('is_available', dishData.is_available)
                 formData.append('category_id', dishData.category_id || '')
-                formData.append('special_category', dishData.special_category)
+                formData.append('is_special', dishData.is_special) // Зміна з special_category на is_special
                 formData.append('image', selectedFile.value)
                 await menuStore.updateDishWithFile(editDish.value.id, formData)
             } else {
@@ -143,7 +143,7 @@ const submitForm = async () => {
                 formData.append('description', dishData.description || '')
                 formData.append('is_available', dishData.is_available)
                 formData.append('category_id', dishData.category_id || '')
-                formData.append('special_category', dishData.special_category)
+                formData.append('is_special', dishData.is_special) // Зміна з special_category на is_special
                 formData.append('image', selectedFile.value)
                 await menuStore.addDishWithFile(formData)
             } else {
@@ -166,7 +166,7 @@ const startEdit = (dish) => {
         description: dish.description || '',
         is_available: dish.is_available,
         category_id: dish.category_id,
-        is_special: dish.special_category === 1,
+        is_special: dish.is_special === 1,
     }
     selectedFile.value = null
     showAddForm.value = true

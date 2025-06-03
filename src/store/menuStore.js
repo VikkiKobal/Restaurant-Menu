@@ -9,12 +9,13 @@ export const useMenuStore = defineStore('menu', {
     }),
     getters: {
         getDishesByCategory: (state) => (categoryId) => {
-            if (categoryId === 1) { // Specialities
-                console.log('Fetching Specialities:', state.allDishes.filter(dish => dish.special_category === 1));
-                return state.allDishes.filter(dish => dish.special_category === 1)
+            if (categoryId === 1) {
+                return state.allDishes.filter(dish => dish.is_special === true)
             }
-            console.log(`Fetching Category ${categoryId}:`, state.allDishes.filter(dish => dish.category_id === categoryId));
             return state.allDishes.filter(dish => dish.category_id === categoryId)
+        },
+        getSpecialDishes: (state) => {
+            return state.allDishes.filter(dish => dish.is_special === true)
         }
     },
     actions: {
@@ -23,11 +24,9 @@ export const useMenuStore = defineStore('menu', {
             this.error = null
             try {
                 const response = await axios.get('/api/menu')
-                console.log('Fetched Menu:', response.data);
                 this.allDishes = response.data
             } catch (err) {
                 this.error = err
-                console.error('Fetch menu error:', err)
             } finally {
                 this.isLoading = false
             }

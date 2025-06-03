@@ -99,7 +99,7 @@ watch(
     }
 )
 
-const specialDishes = computed(() => menuStore.getDishesByCategory(1)) // Specialities
+const specialDishes = computed(() => menuStore.getSpecialDishes)
 
 const filteredDishes = computed(() =>
     selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
@@ -111,7 +111,6 @@ function handleCategorySelect(categoryId) {
 </script>
 
 <style lang="scss" scoped>
-// Your styles remain unchanged
 $color-yellow: #ffc164;
 $color-white: white;
 $font-heading: 'Forum', serif;
