@@ -16,7 +16,7 @@
             Special menu oftenly comes different everyday,<br />
             this is our special food for today.
         </p>
-        <DishList :dishes="category1Dishes" />
+        <DishList :dishes="specialDishes" />
         <img :src="vectorRight" alt="Right arrow" class="arrow arrow-right" />
     </section>
     <section class="special-image-section">
@@ -99,7 +99,7 @@ watch(
     }
 )
 
-const category1Dishes = computed(() => menuStore.getDishesByCategory(1))
+const specialDishes = computed(() => menuStore.getDishesByCategory(1)) // Specialities
 
 const filteredDishes = computed(() =>
     selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
@@ -110,8 +110,8 @@ function handleCategorySelect(categoryId) {
 }
 </script>
 
-
 <style lang="scss" scoped>
+// Your styles remain unchanged
 $color-yellow: #ffc164;
 $color-white: white;
 $font-heading: 'Forum', serif;

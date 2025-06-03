@@ -77,10 +77,6 @@ const closeMenu = () => {
 }
 </script>
 
-
-
-
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Elsie:wght@900&display=swap');
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
@@ -203,7 +199,7 @@ const closeMenu = () => {
     display: none;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1100px) {
     .login-desktop {
         display: flex;
         gap: 10px;
@@ -213,17 +209,20 @@ const closeMenu = () => {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
     .nav-center {
         position: fixed;
         top: 90px;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 100%;
+        max-width: 100%;
         background-color: #272727;
         padding: 20px 0;
         display: none;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         z-index: 25;
     }
 
@@ -234,6 +233,11 @@ const closeMenu = () => {
     .nav-links {
         flex-direction: column;
         gap: 20px;
+        width: 100%;
+        margin: 0;
+        padding: 0 20px;
+        text-align: center;
+        box-sizing: border-box;
     }
 
     .nav-link {
@@ -242,10 +246,15 @@ const closeMenu = () => {
 
     .burger {
         display: flex;
+        margin-left: auto;
     }
 
     .login-mobile {
         display: block;
+    }
+
+    .login-desktop {
+        display: none !important;
     }
 
     .logo-text {

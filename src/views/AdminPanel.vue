@@ -7,17 +7,16 @@
                 <input v-model="form.name" placeholder="Name" required />
                 <input v-model.number="form.price" type="number" placeholder="Price" required />
                 <textarea v-model="form.description" placeholder="Description"></textarea>
-
                 <input type="file" @change="handleFileUpload" />
-
                 <label>
                     <input type="checkbox" v-model="form.is_available" />
                     Available
                 </label>
-
                 <input v-model.number="form.category_id" type="number" placeholder="Category ID" />
-                <input v-model="form.special_category" type="text" placeholder="Special Category" />
-
+                <label>
+                    <input type="checkbox" v-model="form.is_special" />
+                    Спеціальне
+                </label>
                 <button type="submit">{{ editDish ? 'Update' : 'Add' }}</button>
                 <button type="button" @click="resetForm">Cancel</button>
             </form>
@@ -26,6 +25,7 @@
         <table class="dish-table">
             <thead>
                 <tr>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Price ($)</th>
@@ -34,6 +34,15 @@
             </thead>
             <tbody>
                 <tr v-for="dish in dishes" :key="dish.id">
+                    <td>
+                        <img
+                            v-if="dish.image_url"
+                            :src="imageUrl(dish.image_url)"
+                            alt="Dish Image"
+                            style="max-width: 100px; max-height: 100px"
+                        />
+                        <span v-else>No Image</span>
+                    </td>
                     <td>{{ dish.name }}</td>
                     <td>{{ dish.description }}</td>
                     <td>{{ dish.price.toFixed(2) }}</td>
@@ -48,10 +57,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMenuStore } from '@/store/menuStore'
+import { useUserStore } from '@/store/user'
+import { storeToRefs } from 'pinia'
 
 const menuStore = useMenuStore()
+const userStore = useUserStore()
+const { isLoggedIn, isAdmin } = storeToRefs(userStore)
+const router = useRouter()
 const selectedFile = ref(null)
 
 const handleFileUpload = (event) => {
@@ -65,74 +80,76 @@ const form = ref({
     description: '',
     is_available: true,
     category_id: null,
-    special_category: '',
+    is_special: false,
 })
 const showAddForm = ref(false)
 const editDish = ref(null)
+
+const imageUrl = (path) => {
+    return path ? `http://localhost:3000${path}` : ''
+}
 
 const loadDishes = async () => {
     await menuStore.fetchMenu()
     dishes.value = menuStore.allDishes
 }
 
-onMounted(loadDishes)
+onMounted(() => {
+    // Перевірка при завантаженні
+    if (!isLoggedIn.value || !isAdmin.value) {
+        router.push('/login')
+    } else {
+        loadDishes()
+    }
+})
+
+// Слідкуємо за змінами стану авторизації
+watch([isLoggedIn, isAdmin], ([loggedIn, admin]) => {
+    if (!loggedIn || !admin) {
+        router.push('/login')
+    }
+})
 
 const submitForm = async () => {
     try {
-        if (editDish.value) {
-            // Update mode
-            if (selectedFile.value) {
-                // Update with file
-                const formData = new FormData()
-                formData.append('name', form.value.name)
-                formData.append('price', form.value.price)
-                formData.append('description', form.value.description || '')
-                formData.append('is_available', form.value.is_available)
-                formData.append('category_id', form.value.category_id || '')
-                formData.append('special_category', form.value.special_category || '')
-                formData.append('image', selectedFile.value)
-
-                await menuStore.updateDishWithFile(editDish.value.id, formData)
-            } else {
-                // Update without file
-                const updatedDish = {
-                    name: form.value.name,
-                    price: form.value.price,
-                    description: form.value.description || null,
-                    is_available: form.value.is_available,
-                    category_id: form.value.category_id || null,
-                    special_category: form.value.special_category || null,
-                }
-                await menuStore.updateDish(editDish.value.id, updatedDish)
-            }
-        } else {
-            // Add mode
-            if (selectedFile.value) {
-                // Add with file
-                const formData = new FormData()
-                formData.append('name', form.value.name)
-                formData.append('price', form.value.price)
-                formData.append('description', form.value.description || '')
-                formData.append('is_available', form.value.is_available)
-                formData.append('category_id', form.value.category_id || '')
-                formData.append('special_category', form.value.special_category || '')
-                formData.append('image', selectedFile.value)
-
-                await menuStore.addDishWithFile(formData)
-            } else {
-                // Add without file
-                const newDish = {
-                    name: form.value.name,
-                    price: form.value.price,
-                    description: form.value.description || null,
-                    is_available: form.value.is_available,
-                    category_id: form.value.category_id || null,
-                    special_category: form.value.special_category || null,
-                }
-                await menuStore.addDish(newDish)
-            }
+        const dishData = {
+            name: form.value.name,
+            price: form.value.price,
+            description: form.value.description || null,
+            is_available: form.value.is_available,
+            category_id: form.value.category_id || null,
+            special_category: form.value.is_special ? 1 : 0,
         }
 
+        if (editDish.value) {
+            if (selectedFile.value) {
+                const formData = new FormData()
+                formData.append('name', dishData.name)
+                formData.append('price', dishData.price)
+                formData.append('description', dishData.description || '')
+                formData.append('is_available', dishData.is_available)
+                formData.append('category_id', dishData.category_id || '')
+                formData.append('special_category', dishData.special_category)
+                formData.append('image', selectedFile.value)
+                await menuStore.updateDishWithFile(editDish.value.id, formData)
+            } else {
+                await menuStore.updateDish(editDish.value.id, dishData)
+            }
+        } else {
+            if (selectedFile.value) {
+                const formData = new FormData()
+                formData.append('name', dishData.name)
+                formData.append('price', dishData.price)
+                formData.append('description', dishData.description || '')
+                formData.append('is_available', dishData.is_available)
+                formData.append('category_id', dishData.category_id || '')
+                formData.append('special_category', dishData.special_category)
+                formData.append('image', selectedFile.value)
+                await menuStore.addDishWithFile(formData)
+            } else {
+                await menuStore.addDish(dishData)
+            }
+        }
         await loadDishes()
         resetForm()
     } catch (err) {
@@ -149,7 +166,7 @@ const startEdit = (dish) => {
         description: dish.description || '',
         is_available: dish.is_available,
         category_id: dish.category_id,
-        special_category: dish.special_category || '',
+        is_special: dish.special_category === 1,
     }
     selectedFile.value = null
     showAddForm.value = true
@@ -175,12 +192,13 @@ const resetForm = () => {
         description: '',
         is_available: true,
         category_id: null,
-        special_category: '',
+        is_special: false,
     }
 }
 </script>
 
 <style lang="scss" scoped>
+// Твої стилі без змін
 $color-yellow: #ffc164;
 $color-white: #fff;
 $color-black: #000;

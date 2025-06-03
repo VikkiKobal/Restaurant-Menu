@@ -10,10 +10,8 @@
                 {{ isLogin ? 'Please log in to continue.' : 'Create an account to join us.' }}
             </p>
 
-            <!-- ✅ Повідомлення успіху -->
             <p v-if="message" class="success-message">{{ message }}</p>
 
-            <!-- ❌ Повідомлення про помилку -->
             <p v-if="error" class="error-message">{{ error }}</p>
 
             <form @submit.prevent="handleSubmit">
@@ -38,8 +36,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router' // Додаємо useRouter
 import axios from 'axios'
 import { useUserStore } from '@/store/user'
+import { storeToRefs } from 'pinia' // Додаємо storeToRefs для isAdmin
 
 const email = ref('')
 const password = ref('')
@@ -48,6 +48,8 @@ const message = ref('')
 const error = ref('')
 
 const userStore = useUserStore()
+const { isAdmin } = storeToRefs(userStore) // Витягуємо isAdmin
+const router = useRouter() // Ініціалізуємо роутер
 
 const handleSubmit = async () => {
     message.value = ''
@@ -60,11 +62,17 @@ const handleSubmit = async () => {
                 password: password.value,
             })
 
-            // ✅ Новий підхід — зберігаємо токен і user
             const { token, user } = res.data
             userStore.setAuthData(token, user)
 
             message.value = 'Login successful!'
+
+            // Додаємо редірект
+            if (isAdmin.value) {
+                router.push('/admin')
+            } else {
+                router.push('/')
+            }
         } else {
             const res = await axios.post('http://localhost:3000/api/auth/register', {
                 email: email.value,
