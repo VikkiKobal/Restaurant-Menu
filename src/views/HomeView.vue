@@ -453,7 +453,8 @@ $font-button: 'Forum', sans-serif;
     }
 
     .main-heading {
-        font-size: 40px !important;
+        font-size: 38px !important;
+        min-width: 300px !important;
         top: 25% !important;
         padding: 0 10px;
         white-space: normal !important;
@@ -461,10 +462,10 @@ $font-button: 'Forum', sans-serif;
     }
 
     .go-to-menu-btn {
-        font-size: 25px !important;
+        font-size: 23px !important;
         top: 60% !important;
         padding: 12px 40px !important;
-        margin-top: 40px;
+        margin-top: 5px;
     }
 
     .main-photo {
@@ -473,8 +474,9 @@ $font-button: 'Forum', sans-serif;
     }
 
     .sub-heading {
-        margin-top: 30px;
-        font-size: 25px !important;
+        margin-top: 20px;
+        min-width: 300px !important;
+        font-size: 23px !important;
         max-width: 100% !important;
         padding: 0 10px;
         white-space: normal !important;
