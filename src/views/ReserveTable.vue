@@ -7,7 +7,8 @@
             <div class="header-text">
                 <h1>RESERVATION</h1>
                 <p>
-                    Secure your spot at Qitchen, where exceptional sushi and a <br />remarkable dining experience await.
+                    Secure your spot at Cibo gustoso, where exceptional sushi and a <br />remarkable dining experience
+                    await.
                 </p>
             </div>
             <form @submit.prevent="handleSubmit">
