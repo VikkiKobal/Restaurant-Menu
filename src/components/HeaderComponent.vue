@@ -34,6 +34,9 @@
                 </li>
                 <li class="login-mobile">
                     <template v-if="isLoggedIn">
+                        <RouterLink v-if="isAdmin" to="/admin" class="add-dish-button" @click="closeMenu"
+                            >Add New Dish</RouterLink
+                        >
                         <button class="sign-in-btn" @click="logout">Logout</button>
                     </template>
                     <template v-else>
@@ -261,6 +264,14 @@ const closeMenu = () => {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    .sign-in-btn,
+    .add-dish-button {
+        width: 220px;
+        box-sizing: border-box !important;
+        margin: 10px auto;
+        display: block;
     }
 }
 </style>
