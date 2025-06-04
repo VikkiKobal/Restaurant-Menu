@@ -35,7 +35,7 @@
                 <tr v-for="dish in dishes" :key="dish.id">
                     <td>{{ dish.name }}</td>
                     <td>{{ dish.description }}</td>
-                    <td>{{ dish.price.toFixed(2) }}</td>
+                    <td>{{ parseFloat(dish.price).toFixed(2) }}</td>
                     <td>
                         <button @click="startEdit(dish)">Edit</button>
                         <button @click="deleteDish(dish.id)">Delete</button>
