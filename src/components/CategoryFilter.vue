@@ -1,11 +1,13 @@
 <template>
     <div class="category-filter">
-        <select v-model="selectedCategoryId" @change="emitCategoryChange">
-            <option :value="null">All Categories</option>
-            <option v-for="category in categories" :key="category.id" :value="category.id">
-                {{ category.name }}
-            </option>
-        </select>
+        <button
+            v-for="category in categories"
+            :key="category.id"
+            @click="handleClick(category.id)"
+            :class="['filter-button', { active: selectedCategoryId === category.id }]"
+        >
+            {{ category.name }}
+        </button>
     </div>
 </template>
 
@@ -15,7 +17,7 @@ import axios from 'axios'
 
 const categories = ref([])
 const error = ref(null)
-const selectedCategoryId = ref(null) // Define selectedCategoryId
+const selectedCategoryId = ref(null)
 
 // Fetch categories from the backend
 onMounted(async () => {
@@ -30,8 +32,14 @@ onMounted(async () => {
 
 // Emit selected category to parent component
 const emit = defineEmits(['update:categoryId'])
-const emitCategoryChange = () => {
-    emit('update:categoryId', selectedCategoryId.value)
+function handleClick(categoryId) {
+    if (selectedCategoryId.value === categoryId) {
+        selectedCategoryId.value = null
+        emit('update:categoryId', null) // Reset filter
+    } else {
+        selectedCategoryId.value = categoryId
+        emit('update:categoryId', categoryId)
+    }
 }
 </script>
 
@@ -58,6 +66,11 @@ const emitCategoryChange = () => {
     transition: background-color 0.3s ease, color 0.3s ease;
 
     &:hover {
+        background-color: #ff5c5c;
+        color: white;
+    }
+
+    &.active {
         background-color: #ff5c5c;
         color: white;
     }
