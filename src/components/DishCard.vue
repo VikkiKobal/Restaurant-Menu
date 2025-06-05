@@ -21,6 +21,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:3000' // Зміна на process.env
+console.log('Environment variables:', process.env) // Дебагінг
+console.log('VUE_APP_API_URL:', process.env.VUE_APP_API_URL)
+
 const props = defineProps({
     image: String,
     title: String,
@@ -35,15 +39,15 @@ const decrease = () => {
 }
 
 const imageSrc = computed(() => {
-    if (!props.image) return '/assets/placeholder.png' // Fallback image
+    if (!props.image) return '/assets/placeholder.png'
     if (props.image.startsWith('http')) return props.image
-    // Handle paths starting with /assets/images/
     const cleanPath = props.image.replace(/^\/assets\/images\//, '')
-    return `http://localhost:3000/assets/images/${cleanPath}`
+    return `${baseUrl}/assets/images/${cleanPath}`
 })
 </script>
 
 <style scoped lang="scss">
+/* Ваші стилі залишаються без змін */
 .dish-card {
     position: relative;
     width: 325px;

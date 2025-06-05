@@ -50,6 +50,7 @@ const error = ref('')
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore) // Витягуємо isAdmin
 const router = useRouter() // Ініціалізуємо роутер
+const API_BASE_URL = process.env.VUE_APP_API_URL || 'http://localhost:3000'
 
 const handleSubmit = async () => {
     message.value = ''
@@ -57,7 +58,7 @@ const handleSubmit = async () => {
 
     try {
         if (isLogin.value) {
-            const res = await axios.post('http://localhost:3000/api/auth/login', {
+            const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
                 email: email.value,
                 password: password.value,
             })
@@ -67,14 +68,13 @@ const handleSubmit = async () => {
 
             message.value = 'Login successful!'
 
-            // Додаємо редірект
             if (isAdmin.value) {
                 router.push('/admin')
             } else {
                 router.push('/')
             }
         } else {
-            const res = await axios.post('http://localhost:3000/api/auth/register', {
+            const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
                 email: email.value,
                 password: password.value,
             })
@@ -86,10 +86,6 @@ const handleSubmit = async () => {
     }
 }
 </script>
-
-
-
-
 
 <style scoped lang="scss">
 $color-yellow: #ffc164;
