@@ -26,7 +26,7 @@
     <section class="specialities-text" id="menu" ref="menuSection">
         <h2 class="specialities-heading">Our Specialities</h2>
         <p class="specialities-subheading">Authentic meals from our restaurant served with high quality ingredients.</p>
-        <CategoryFilter @select="handleCategorySelect" />
+        <CategoryFilter v-model:categoryId="selectedCategory" />
         <DishList :dishes="filteredDishes" />
     </section>
 
@@ -77,11 +77,11 @@ function scrollToMenu() {
 }
 
 const selectedCategory = ref(null)
-
 const menuStore = useMenuStore()
 
 onMounted(() => {
     menuStore.fetchMenu()
+    console.log('Dishes in store:', menuStore.allDishes) // Debug
 })
 
 onMounted(() => {
@@ -101,13 +101,14 @@ watch(
 
 const specialDishes = computed(() => menuStore.getSpecialDishes)
 
-const filteredDishes = computed(() =>
-    selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
-)
-
-function handleCategorySelect(categoryId) {
-    selectedCategory.value = categoryId
-}
+const filteredDishes = computed(() => {
+    console.log('Selected category:', selectedCategory.value) // Debug
+    console.log(
+        'Filtered dishes:',
+        selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
+    ) // Debug
+    return selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
+})
 </script>
 
 <style lang="scss" scoped>
