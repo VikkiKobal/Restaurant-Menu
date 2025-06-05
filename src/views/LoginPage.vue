@@ -36,10 +36,10 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router' // Додаємо useRouter
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/store/user'
-import { storeToRefs } from 'pinia' // Додаємо storeToRefs для isAdmin
+import { storeToRefs } from 'pinia'
 
 const email = ref('')
 const password = ref('')
@@ -48,9 +48,9 @@ const message = ref('')
 const error = ref('')
 
 const userStore = useUserStore()
-const { isAdmin } = storeToRefs(userStore) // Витягуємо isAdmin
-const router = useRouter() // Ініціалізуємо роутер
-const API_BASE_URL = process.env.VUE_APP_API_URL || 'http://localhost:3000'
+const { isAdmin } = storeToRefs(userStore)
+const router = useRouter()
+const API_BASE_URL = process.env.VUE_APP_API_URL // Remove fallback
 
 const handleSubmit = async () => {
     message.value = ''
@@ -80,9 +80,11 @@ const handleSubmit = async () => {
             })
 
             message.value = res.data.message
+            isLogin.value = true // Switch to login after registration
         }
     } catch (err) {
         error.value = err.response?.data?.message || 'Something went wrong'
+        console.error('Auth error:', err) // Debug
     }
 }
 </script>
