@@ -1,13 +1,11 @@
 <template>
     <div class="category-filter">
-        <button
-            v-for="category in categories"
-            :key="category.id"
-            @click="handleClick(category.id)"
-            :class="['filter-button', { active: selectedCategoryId === category.id }]"
-        >
-            {{ category.name }}
-        </button>
+        <select v-model="selectedCategoryId" @change="emitCategoryChange">
+            <option :value="null">All Categories</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+                {{ category.name }}
+            </option>
+        </select>
     </div>
 </template>
 
@@ -16,27 +14,24 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 const categories = ref([])
-const selectedCategoryId = ref(null)
+const error = ref(null)
+const selectedCategoryId = ref(null) // Define selectedCategoryId
 
+// Fetch categories from the backend
 onMounted(async () => {
     try {
-        const response = await axios.get('/api/categories')
+        const response = await axios.get(`${process.env.VUE_APP_API_URL}/api/categories`)
         categories.value = response.data
-    } catch (error) {
-        console.error('Помилка при завантаженні категорій:', error)
+    } catch (err) {
+        error.value = err
+        console.error('Помилка при завантаженні категорій:', err)
     }
 })
 
-const emit = defineEmits(['select'])
-
-function handleClick(categoryId) {
-    if (selectedCategoryId.value === categoryId) {
-        selectedCategoryId.value = null
-        emit('select', null)
-    } else {
-        selectedCategoryId.value = categoryId
-        emit('select', categoryId)
-    }
+// Emit selected category to parent component
+const emit = defineEmits(['update:categoryId'])
+const emitCategoryChange = () => {
+    emit('update:categoryId', selectedCategoryId.value)
 }
 </script>
 

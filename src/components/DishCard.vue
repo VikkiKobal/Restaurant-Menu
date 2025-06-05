@@ -21,8 +21,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:3000' // Зміна на process.env
-console.log('Environment variables:', process.env) // Дебагінг
+const baseUrl = process.env.VUE_APP_API_URL || 'https://restaurant-menu-backend-aem1.onrender.com'
+console.log('Environment variables:', process.env)
 console.log('VUE_APP_API_URL:', process.env.VUE_APP_API_URL)
 
 const props = defineProps({
@@ -47,7 +47,6 @@ const imageSrc = computed(() => {
 </script>
 
 <style scoped lang="scss">
-/* Ваші стилі залишаються без змін */
 .dish-card {
     position: relative;
     width: 325px;
