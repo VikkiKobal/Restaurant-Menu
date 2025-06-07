@@ -11,8 +11,6 @@ app.use(pinia)
 app.use(router)
 
 const userStore = useUserStore()
-userStore.initializeFromLocalStorage()
+userStore.initializeFromStorage()  
 
 app.mount('#app')
-
-

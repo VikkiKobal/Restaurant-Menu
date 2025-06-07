@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -10,26 +10,25 @@ export const useUserStore = defineStore('user', {
         isAdmin: (state) => state.user?.role === 'admin',
     },
     actions: {
-        initializeFromLocalStorage() {
-            const storedToken = localStorage.getItem('token')
-            const storedUser = localStorage.getItem('user')
-
+        initializeFromStorage() {
+            const storedToken = sessionStorage.getItem('token');
+            const storedUser = sessionStorage.getItem('user');
             if (storedToken && storedUser) {
-                this.token = storedToken
-                this.user = JSON.parse(storedUser)
+                this.token = storedToken;
+                this.user = JSON.parse(storedUser);
             }
         },
         setAuthData(token, user) {
-            this.token = token
-            this.user = user
-            localStorage.setItem('token', token)
-            localStorage.setItem('user', JSON.stringify(user))
+            this.token = token;
+            this.user = user;
+            sessionStorage.setItem('token', token);
+            sessionStorage.setItem('user', JSON.stringify(user));
         },
         logout() {
-            this.token = null
-            this.user = null
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-        }
-    }
-})
+            this.token = null;
+            this.user = null;
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
+        },
+    },
+});

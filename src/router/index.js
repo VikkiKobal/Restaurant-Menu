@@ -54,22 +54,23 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const userStore = useUserStore()
-    const { isLoggedIn, isAdmin } = userStore
+    const userStore = useUserStore();
+    userStore.initializeFromStorage(); 
+    const { isLoggedIn, isAdmin } = userStore;
 
     if (to.meta.requiresAuth && !isLoggedIn) {
-        return next('/login')
+        return next('/login');
     }
     if (to.meta.requiresAdmin && !isAdmin) {
-        return next('/')
+        return next('/');
     }
     if (to.path === '/login' && isLoggedIn && isAdmin) {
-        return next('/admin')
+        return next('/admin');
     }
     if (to.path === '/login' && isLoggedIn && !isAdmin) {
-        return next('/')
+        return next('/');
     }
-    next()
-})
+    next();
+});
 
 export default router

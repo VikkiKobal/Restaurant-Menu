@@ -81,7 +81,7 @@ const menuStore = useMenuStore()
 
 onMounted(() => {
     menuStore.fetchMenu()
-    console.log('Dishes in store:', menuStore.allDishes) // Debug
+    console.log('Dishes in store:', menuStore.allDishes) 
 })
 
 onMounted(() => {
@@ -102,11 +102,11 @@ watch(
 const specialDishes = computed(() => menuStore.getSpecialDishes)
 
 const filteredDishes = computed(() => {
-    console.log('Selected category:', selectedCategory.value) // Debug
+    console.log('Selected category:', selectedCategory.value) 
     console.log(
         'Filtered dishes:',
         selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
-    ) // Debug
+    ) 
     return selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
 })
 </script>

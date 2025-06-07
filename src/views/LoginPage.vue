@@ -35,11 +35,11 @@
 
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
 import { useUserStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
+import api from '@/api'
 
 const email = ref('')
 const password = ref('')
@@ -50,41 +50,45 @@ const error = ref('')
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 const router = useRouter()
-const API_BASE_URL = process.env.VUE_APP_API_URL // Remove fallback
+
+onMounted(() => {
+    userStore.initializeFromStorage()
+    if (userStore.isLoggedIn) {
+        if (isAdmin.value) {
+            router.push('/admin')
+        } else {
+            router.push('/')
+        }
+    }
+})
 
 const handleSubmit = async () => {
     message.value = ''
     error.value = ''
-
     try {
         if (isLogin.value) {
-            const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+            const res = await api.post('/api/auth/login', {
                 email: email.value,
                 password: password.value,
             })
-
             const { token, user } = res.data
             userStore.setAuthData(token, user)
-
             message.value = 'Login successful!'
-
             if (isAdmin.value) {
                 router.push('/admin')
             } else {
                 router.push('/')
             }
         } else {
-            const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
+            const res = await api.post('/api/auth/register', {
                 email: email.value,
                 password: password.value,
             })
-
             message.value = res.data.message
-            isLogin.value = true // Switch to login after registration
+            isLogin.value = true
         }
     } catch (err) {
         error.value = err.response?.data?.message || 'Something went wrong'
-        console.error('Auth error:', err) // Debug
     }
 }
 </script>

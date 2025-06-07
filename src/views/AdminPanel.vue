@@ -22,30 +22,31 @@
             </form>
         </div>
 
-        <table class="dish-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price ($)</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="dish in dishes" :key="dish.id">
-                    <td>{{ dish.name }}</td>
-                    <td>{{ dish.description }}</td>
-                    <td>{{ parseFloat(dish.price).toFixed(2) }}</td>
-                    <td>
-                        <button @click="startEdit(dish)">Edit</button>
-                        <button @click="deleteDish(dish.id)">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper">
+            <table class="dish-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price ($)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="dish in dishes" :key="dish.id">
+                        <td>{{ dish.name }}</td>
+                        <td>{{ dish.description }}</td>
+                        <td>{{ parseFloat(dish.price).toFixed(2) }}</td>
+                        <td>
+                            <button @click="startEdit(dish)">Edit</button>
+                            <button @click="deleteDish(dish.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
-
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
@@ -58,10 +59,6 @@ const userStore = useUserStore()
 const { isLoggedIn, isAdmin } = storeToRefs(userStore)
 const router = useRouter()
 const selectedFile = ref(null)
-
-const handleFileUpload = (event) => {
-    selectedFile.value = event.target.files[0]
-}
 
 const dishes = ref([])
 const form = ref({
@@ -81,7 +78,7 @@ const loadDishes = async () => {
 }
 
 onMounted(() => {
-    // Перевірка при завантаженні
+    userStore.initializeFromStorage()
     if (!isLoggedIn.value || !isAdmin.value) {
         router.push('/login')
     } else {
@@ -89,7 +86,6 @@ onMounted(() => {
     }
 })
 
-// Слідкуємо за змінами стану авторизації
 watch([isLoggedIn, isAdmin], ([loggedIn, admin]) => {
     if (!loggedIn || !admin) {
         router.push('/login')
@@ -104,7 +100,7 @@ const submitForm = async () => {
             description: form.value.description || null,
             is_available: form.value.is_available,
             category_id: form.value.category_id || null,
-            is_special: form.value.is_special ? 1 : 0, // Зміна з special_category на is_special
+            is_special: form.value.is_special ? 1 : 0,
         }
 
         if (editDish.value) {
@@ -115,7 +111,7 @@ const submitForm = async () => {
                 formData.append('description', dishData.description || '')
                 formData.append('is_available', dishData.is_available)
                 formData.append('category_id', dishData.category_id || '')
-                formData.append('is_special', dishData.is_special) // Зміна з special_category на is_special
+                formData.append('is_special', dishData.is_special)
                 formData.append('image', selectedFile.value)
                 await menuStore.updateDishWithFile(editDish.value.id, formData)
             } else {
@@ -129,7 +125,7 @@ const submitForm = async () => {
                 formData.append('description', dishData.description || '')
                 formData.append('is_available', dishData.is_available)
                 formData.append('category_id', dishData.category_id || '')
-                formData.append('is_special', dishData.is_special) // Зміна з special_category на is_special
+                formData.append('is_special', dishData.is_special)
                 formData.append('image', selectedFile.value)
                 await menuStore.addDishWithFile(formData)
             } else {
@@ -184,7 +180,6 @@ const resetForm = () => {
 </script>
 
 <style lang="scss" scoped>
-// Твої стилі без змін
 $color-yellow: #ffc164;
 $color-white: #fff;
 $color-black: #000;
@@ -194,19 +189,12 @@ $font-heading: 'Forum', serif;
 .admin-panel {
     width: 100vw;
     min-height: 100vh;
-    padding: 40px;
+    padding: 20px;
     background-color: $color-black;
     color: $color-white;
     font-family: $font-heading;
     box-sizing: border-box;
     overflow-x: hidden;
-}
-
-h1 {
-    text-align: center;
-    font-size: 3rem;
-    color: $color-yellow;
-    margin-bottom: 20px;
 }
 
 .add-button {
@@ -217,7 +205,7 @@ h1 {
     padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     display: block;
 
     &:hover {
@@ -227,20 +215,18 @@ h1 {
 }
 
 .form-wrapper {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     background-color: #111;
-    padding: 20px;
+    padding: 15px;
     border: 2px solid $color-yellow;
     border-radius: 10px;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 100%;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 input,
@@ -248,9 +234,9 @@ textarea {
     background-color: $color-dark-gray;
     border: 2px solid $color-yellow;
     border-radius: 8px;
-    padding: 10px 15px;
+    padding: 8px 12px;
     font-family: $font-heading;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: $color-white;
 
     &:focus {
@@ -264,8 +250,8 @@ textarea {
 button[type='submit'],
 button[type='button'] {
     font-family: $font-heading;
-    font-size: 1.1rem;
-    padding: 10px 18px;
+    font-size: 1rem;
+    padding: 8px 16px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
@@ -292,33 +278,39 @@ button[type='button'] {
     }
 }
 
+.table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 20px;
+}
+
 .dish-table {
     width: 100%;
+    min-width: 600px;
     border-collapse: collapse;
-    margin-top: 30px;
 
     th,
     td {
         border: 1px solid #444;
-        padding: 12px 16px;
+        padding: 8px 12px;
         text-align: left;
+        font-size: 0.9rem;
     }
 
     th {
         background-color: #333;
         color: $color-yellow;
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     td {
-        font-size: 1rem;
         vertical-align: top;
     }
 
     button {
-        margin-right: 10px;
-        padding: 6px 12px;
-        font-size: 0.95rem;
+        margin-right: 8px;
+        padding: 4px 8px;
+        font-size: 0.85rem;
         border-radius: 6px;
         font-family: $font-heading;
         border: 2px solid $color-yellow;
@@ -341,6 +333,33 @@ button[type='button'] {
                 color: $color-white;
             }
         }
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-panel {
+        padding: 15px;
+    }
+
+    .add-button {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+
+    .form-wrapper {
+        padding: 10px;
+    }
+
+    input,
+    textarea {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    button[type='submit'],
+    button[type='button'] {
+        font-size: 0.9rem;
+        padding: 6px 12px;
     }
 }
 </style>

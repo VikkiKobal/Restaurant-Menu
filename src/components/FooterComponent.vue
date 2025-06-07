@@ -107,7 +107,7 @@ $color-yellow: #ffc164;
     width: 30px;
     height: 40px;
     filter: brightness(0) saturate(100%) invert(78%) sepia(37%) saturate(436%) hue-rotate(351deg) brightness(101%)
-        contrast(101%); /* Matches $color-yellow */
+        contrast(101%); 
 }
 
 .socials {
@@ -167,15 +167,15 @@ $color-yellow: #ffc164;
     }
 }
 
-/* Media query for screens <= 600px */
+
 @media (max-width: 600px) {
     .footer {
-        min-height: 400px; /* Reduced min-height for mobile */
+        min-height: 400px; 
         padding: 40px 15px;
     }
 
     .footer-text {
-        font-size: 32px; /* Reduced font size for better mobile fit */
+        font-size: 32px; 
         margin-bottom: 25px;
     }
 
@@ -204,21 +204,20 @@ $color-yellow: #ffc164;
     }
 }
 
-/* Additional media query for very small screens (<= 400px) */
 @media (max-width: 400px) {
     .footer {
-        min-height: 350px; /* Further reduced for smaller screens */
+        min-height: 350px; 
         padding: 30px 10px;
     }
 
     .footer-text {
-        font-size: 28px; /* Even smaller font for tiny screens */
+        font-size: 28px; 
         margin-bottom: 20px;
     }
 
     .contact-row {
         gap: 15px;
-        flex-direction: column; /* Stack contact items vertically */
+        flex-direction: column; 
     }
 
     .contact-item {

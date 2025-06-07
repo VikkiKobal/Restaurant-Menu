@@ -19,19 +19,17 @@ const categories = ref([]);
 const error = ref(null);
 const selectedCategoryId = ref(null);
 
-// Fetch categories from the backend
 onMounted(async () => {
   try {
     const response = await axios.get(`${process.env.VUE_APP_API_URL}/api/categories`);
     categories.value = response.data;
-    console.log('Fetched categories:', categories.value); // Дебагінг
+    console.log('Fetched categories:', categories.value); 
   } catch (err) {
     error.value = err;
     console.error('Помилка при завантаженні категорій:', err);
   }
 });
 
-// Emit selected category to parent component
 const emit = defineEmits(['update:categoryId']);
 function handleClick(categoryId) {
   if (selectedCategoryId.value === categoryId) {
@@ -41,7 +39,6 @@ function handleClick(categoryId) {
     selectedCategoryId.value = categoryId;
     emit('update:categoryId', categoryId);
   }
-  console.log('Selected category ID:', selectedCategoryId.value); // Дебагінг
 }
 </script>
 

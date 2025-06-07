@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import api from '@/api';
 
 export const useMenuStore = defineStore('menu', {
     state: () => ({
@@ -23,13 +23,13 @@ export const useMenuStore = defineStore('menu', {
             this.isLoading = true;
             this.error = null;
             try {
-                const response = await axios.get(`${process.env.VUE_APP_API_URL}/api/menu`);
+                const response = await api.get('/api/menu');
                 this.allDishes = response.data.map((dish) => ({
                     ...dish,
-                    price: Number(dish.price), // Додаткова конвертація на всякий випадок
+                    price: Number(dish.price),
                 }));
             } catch (err) {
-                this.error = err;
+                this.error = err.response?.data?.message || 'Failed to fetch menu';
                 console.error('Помилка при завантаженні меню:', err);
             } finally {
                 this.isLoading = false;
@@ -37,36 +37,39 @@ export const useMenuStore = defineStore('menu', {
         },
         async addDish(newDish) {
             try {
-                const response = await axios.post(`${process.env.VUE_APP_API_URL}/api/menu`, newDish);
+                const response = await api.post('/api/menu', newDish);
                 this.allDishes.push(response.data);
             } catch (err) {
-                this.error = err;
+                this.error = err.response?.data?.message || 'Failed to add dish';
+                throw err;
             }
         },
         async updateDish(id, updatedDish) {
             try {
-                const response = await axios.put(`${process.env.VUE_APP_API_URL}/api/menu/${id}`, updatedDish);
+                const response = await api.put(`/api/menu/${id}`, updatedDish);
                 const index = this.allDishes.findIndex((d) => d.id === id);
                 if (index !== -1) {
                     this.allDishes[index] = { ...this.allDishes[index], ...response.data };
                 }
             } catch (err) {
-                this.error = err;
+                this.error = err.response?.data?.message || 'Failed to update dish';
+                throw err;
             }
         },
         async addDishWithFile(formData) {
             try {
-                const response = await axios.post(`${process.env.VUE_APP_API_URL}/api/menu/menu-items/upload`, formData, {
+                const response = await api.post('/api/menu/menu-items/upload', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 this.allDishes.push(response.data);
             } catch (err) {
-                this.error = err;
+                this.error = err.response?.data?.message || 'Failed to add dish with file';
+                throw err;
             }
         },
         async updateDishWithFile(id, formData) {
             try {
-                const response = await axios.put(`${process.env.VUE_APP_API_URL}/api/menu/menu-items/upload/${id}`, formData, {
+                const response = await api.put(`/api/menu/menu-items/upload/${id}`, formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 const index = this.allDishes.findIndex((d) => d.id === id);
@@ -74,15 +77,17 @@ export const useMenuStore = defineStore('menu', {
                     this.allDishes[index] = { ...this.allDishes[index], ...response.data };
                 }
             } catch (err) {
-                this.error = err;
+                this.error = err.response?.data?.message || 'Failed to update dish with file';
+                throw err;
             }
         },
         async deleteDish(id) {
             try {
-                await axios.delete(`${process.env.VUE_APP_API_URL}/api/menu/${id}`);
+                await api.delete(`/api/menu/${id}`);
                 this.allDishes = this.allDishes.filter((d) => d.id !== id);
             } catch (err) {
-                this.error = err;
+                this.error = err.response?.data?.message || 'Failed to delete dish';
+                throw err;
             }
         },
     },
