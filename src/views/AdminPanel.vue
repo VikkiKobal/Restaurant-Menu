@@ -294,13 +294,13 @@ button[type='button'] {
         border: 1px solid #444;
         padding: 8px 12px;
         text-align: left;
-        font-size: 0.9rem;
+        font-size: 1.2rem;
     }
 
     th {
         background-color: #333;
         color: $color-yellow;
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
     td {
@@ -310,7 +310,7 @@ button[type='button'] {
     button {
         margin-right: 8px;
         padding: 4px 8px;
-        font-size: 0.85rem;
+        font-size: 1.2rem;
         border-radius: 6px;
         font-family: $font-heading;
         border: 2px solid $color-yellow;
