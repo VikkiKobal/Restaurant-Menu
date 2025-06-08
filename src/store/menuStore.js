@@ -22,8 +22,9 @@ export const useMenuStore = defineStore('menu', {
         async fetchMenu() {
             this.isLoading = true;
             this.error = null;
+            this.allDishes = [];
             try {
-                const response = await api.get('/api/menu');
+                const response = await api.get(`/api/menu?_t=${Date.now()}`);
                 this.allDishes = response.data.map((dish) => ({
                     ...dish,
                     price: Number(dish.price),
@@ -76,6 +77,7 @@ export const useMenuStore = defineStore('menu', {
                 if (index !== -1) {
                     this.allDishes[index] = { ...this.allDishes[index], ...response.data };
                 }
+                await this.fetchMenu();
             } catch (err) {
                 this.error = err.response?.data?.message || 'Failed to update dish with file';
                 throw err;

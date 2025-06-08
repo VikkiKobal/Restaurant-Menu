@@ -7,11 +7,20 @@
                 <p class="description">{{ description }}</p>
                 <div class="bottom-info">
                     <span class="price">{{ price }}₴</span>
-                    <div class="quantity-selector">
-                        <button @click="decrease" class="btn">-</button>
-                        <span>{{ quantity }}</span>
-                        <button @click="increase" class="btn">+</button>
-                    </div>
+                    <button @click="toggleFavorite" class="favorite-btn" :class="{ active: isFavorite }">
+                        <svg viewBox="0 0 24 24" class="heart-icon" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                                   2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+                                   C13.09 3.81 14.76 3 16.5 3
+                                   19.58 3 22 5.42 22 8.5
+                                   c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                                fill="none"
+                                stroke="white"
+                                stroke-width="2"
+                            />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -19,11 +28,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
-const baseUrl = process.env.VUE_APP_API_URL || 'https://restaurant-menu-backend-aem1.onrender.com'
-console.log('Environment variables:', process.env)
-console.log('VUE_APP_API_URL:', process.env.VUE_APP_API_URL)
+const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:3000'
 
 const props = defineProps({
     image: String,
@@ -32,19 +39,32 @@ const props = defineProps({
     price: Number,
 })
 
-const quantity = ref(1)
-const increase = () => quantity.value++
-const decrease = () => {
-    if (quantity.value > 1) quantity.value--
+const isFavorite = ref(false)
+const toggleFavorite = () => {
+    isFavorite.value = !isFavorite.value
 }
 
 const imageSrc = computed(() => {
     if (!props.image) return '/assets/placeholder.png'
-    if (props.image.startsWith('http')) return props.image
-    const cleanPath = props.image.replace(/^\/assets\/images\//, '')
+
+    if (/^https?:\/\//.test(props.image)) return props.image
+
+    const cleanPath = props.image.replace(/^\/?assets\/images\//, '')
+
     return `${baseUrl}/assets/images/${cleanPath}`
 })
+
+watch(
+    () => props.image,
+    (newVal) => {
+        console.log('props.image:', newVal)
+        console.log('computed imageSrc:', imageSrc.value)
+    },
+    { immediate: true }
+)
 </script>
+
+
 
 <style scoped lang="scss">
 .dish-card {
@@ -92,6 +112,7 @@ const imageSrc = computed(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-right: 10px;
 }
 
 .price {
@@ -99,23 +120,28 @@ const imageSrc = computed(() => {
     font-weight: bold;
 }
 
-.quantity-selector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ffc164;
-    border-radius: 30px;
-    width: 100px;
-    height: 40px;
-    color: white;
-}
-
-.btn {
+.favorite-btn {
     background: none;
     border: none;
-    color: white;
-    font-size: 20px;
-    width: 30px;
+    padding: 0;
     cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.2);
+}
+
+.heart-icon {
+    width: 28px;
+    height: 28px;
+    stroke: white;
+    fill: none;
+    transition: fill 0.3s, stroke 0.3s;
+}
+
+.favorite-btn.active .heart-icon {
+    fill: red;
+    stroke: red;
 }
 </style>
