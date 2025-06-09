@@ -12,6 +12,7 @@ export const useMenuStore = defineStore('menu', {
             if (categoryId === 1) {
                 return state.allDishes.filter((dish) => dish.is_special === true);
             }
+
             return state.allDishes.filter((dish) => dish.category_id === categoryId);
         },
         getSpecialDishes: (state) => {
@@ -62,9 +63,11 @@ export const useMenuStore = defineStore('menu', {
                 const response = await api.post('/api/menu/menu-items/upload', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
+                console.log('Response from addDishWithFile:', response.data);
                 this.allDishes.push(response.data);
             } catch (err) {
                 this.error = err.response?.data?.message || 'Failed to add dish with file';
+                console.error('Error:', err);
                 throw err;
             }
         },

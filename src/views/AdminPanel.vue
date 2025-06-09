@@ -177,6 +177,11 @@ const resetForm = () => {
         is_special: false,
     }
 }
+
+const handleFileUpload = (event) => {
+    selectedFile.value = event.target.files[0]
+    console.log('HandleFileUpload triggered. Selected file:', selectedFile.value)
+}
 </script>
 
 <style lang="scss" scoped>
