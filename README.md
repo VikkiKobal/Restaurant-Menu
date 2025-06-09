@@ -1,24 +1,26 @@
-# restaurant-menu
+# Restaurant Website Frontend
 
-## Project setup
-```
-npm install
-```
+**Status:** Project in active development 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+This is the frontend for a restaurant website, built with **Vue.js**.  
+It provides a modern, responsive user interface for browsing the menu and managing content through an **Admin Panel**.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Features
 
-### Lints and fixes files
-```
-npm run lint
-```
+- Responsive **UI/UX** design  
+- Browse **menu items**
+- **Admin Panel** for managing menu items and categories  
+- User **authentication and authorization** (JWT-based) — for admin access  
+- Integration with the backend **REST API**  
+- Modular and scalable component architecture  
+- **State management** with Pinia  
+- Error handling and user feedback  
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Technologies
+
+- **Vue.js** (Composition API)  
+- **Pinia** (state management)  
+- **Axios** (for API requests)  
+- **Vue Router** (for navigation)  
+- **JWT** (for authentication)  
+- **CSS** / **SCSS** (for styling)  
