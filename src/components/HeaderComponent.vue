@@ -52,20 +52,13 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/store/user'
-// import { storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
-// const { isLoggedIn, isAdmin } = storeToRefs(userStore)
+const { isLoggedIn, isAdmin } = storeToRefs(userStore)
 
 const isOpen = ref(false)
 const headerRef = ref(null)
-
-/* watchEffect(() => {
-    console.log('User from store:', user.value)
-    console.log('Token from store:', token.value)
-    console.log('isLoggedIn:', isLoggedIn.value)
-    console.log('isAdmin:', isAdmin.value)
-})*/
 
 const logout = () => {
     userStore.logout()
@@ -88,6 +81,7 @@ const handleClickOutside = (event) => {
 }
 
 onMounted(() => {
+    userStore.initializeFromStorage() // Initialize user state
     document.addEventListener('click', handleClickOutside)
 })
 

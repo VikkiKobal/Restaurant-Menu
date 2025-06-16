@@ -6,6 +6,8 @@
             <form @submit.prevent="submitForm" enctype="multipart/form-data">
                 <input v-model="form.name" placeholder="Name" required />
                 <input v-model.number="form.price" type="number" placeholder="Price" required />
+                <input v-model.number="form.portion" type="number" placeholder="Portion (e.g., 250)" />
+                <!-- Changed to number -->
                 <textarea v-model="form.description" placeholder="Description"></textarea>
                 <input type="file" @change="handleFileUpload" />
                 <label>
@@ -29,6 +31,7 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Price ($)</th>
+                        <th>Portion</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -37,6 +40,7 @@
                         <td>{{ dish.name }}</td>
                         <td>{{ dish.description }}</td>
                         <td>{{ parseFloat(dish.price).toFixed(2) }}</td>
+                        <td>{{ dish.portion || 'N/A' }}</td>
                         <td>
                             <button @click="startEdit(dish)">Edit</button>
                             <button @click="deleteDish(dish.id)">Delete</button>
@@ -47,6 +51,7 @@
         </div>
     </div>
 </template>
+
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
@@ -68,7 +73,9 @@ const form = ref({
     is_available: true,
     category_id: null,
     is_special: false,
+    portion: null, // Changed to null for number
 })
+
 const showAddForm = ref(false)
 const editDish = ref(null)
 
@@ -94,6 +101,12 @@ watch([isLoggedIn, isAdmin], ([loggedIn, admin]) => {
 
 const submitForm = async () => {
     try {
+        // Validate portion
+        if (form.value.portion && (isNaN(form.value.portion) || form.value.portion < 0)) {
+            alert('Portion must be a positive number')
+            return
+        }
+
         const dishData = {
             name: form.value.name,
             price: form.value.price,
@@ -101,7 +114,9 @@ const submitForm = async () => {
             is_available: form.value.is_available,
             category_id: form.value.category_id || null,
             is_special: form.value.is_special ? 1 : 0,
+            portion: form.value.portion || null,
         }
+        console.log('Submitting data:', dishData)
 
         if (editDish.value) {
             if (selectedFile.value) {
@@ -112,7 +127,9 @@ const submitForm = async () => {
                 formData.append('is_available', dishData.is_available)
                 formData.append('category_id', dishData.category_id || '')
                 formData.append('is_special', dishData.is_special)
+                formData.append('portion_size', dishData.portion || '') // Map to portion_size
                 formData.append('image', selectedFile.value)
+                console.log('Submitting formData:', Object.fromEntries(formData))
                 await menuStore.updateDishWithFile(editDish.value.id, formData)
             } else {
                 await menuStore.updateDish(editDish.value.id, dishData)
@@ -126,7 +143,9 @@ const submitForm = async () => {
                 formData.append('is_available', dishData.is_available)
                 formData.append('category_id', dishData.category_id || '')
                 formData.append('is_special', dishData.is_special)
+                formData.append('portion_size', dishData.portion || '') // Map to portion_size
                 formData.append('image', selectedFile.value)
+                console.log('Submitting formData:', Object.fromEntries(formData))
                 await menuStore.addDishWithFile(formData)
             } else {
                 await menuStore.addDish(dishData)
@@ -135,8 +154,8 @@ const submitForm = async () => {
         await loadDishes()
         resetForm()
     } catch (err) {
-        console.error('Error submitting form:', err)
-        alert('Error: ' + err.message)
+        console.error('Error submitting form:', err.response?.data || err.message)
+        alert('Error: ' + (err.response?.data?.message || err.message))
     }
 }
 
@@ -149,6 +168,7 @@ const startEdit = (dish) => {
         is_available: dish.is_available,
         category_id: dish.category_id,
         is_special: dish.is_special === 1,
+        portion: dish.portion || null, // Number or null
     }
     selectedFile.value = null
     showAddForm.value = true
@@ -160,7 +180,7 @@ const deleteDish = async (id) => {
         await loadDishes()
     } catch (err) {
         console.error('Error deleting dish:', err)
-        alert('Error: ' + err.message)
+        alert('Error: ' + (err.response?.data?.message || err.message))
     }
 }
 
@@ -175,6 +195,7 @@ const resetForm = () => {
         is_available: true,
         category_id: null,
         is_special: false,
+        portion: null,
     }
 }
 
@@ -183,6 +204,7 @@ const handleFileUpload = (event) => {
     console.log('HandleFileUpload triggered. Selected file:', selectedFile.value)
 }
 </script>
+
 
 <style lang="scss" scoped>
 $color-yellow: #ffc164;
