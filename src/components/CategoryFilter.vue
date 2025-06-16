@@ -39,7 +39,10 @@ function handleClick(categoryId) {
     } else {
         selectedCategoryId.value = categoryId
     }
-    emit('update:categoryId', selectedCategoryId.value)
+
+    nextTick(() => {
+        emit('update:categoryId', selectedCategoryId.value)
+    })
 }
 </script>
 
