@@ -3,7 +3,7 @@
         <button
             v-for="category in filteredCategories"
             :key="category.id"
-            @click="handleClick(category.id)"
+            @click="handleClick(category.id, $event)"
             :class="['filter-button', { active: selectedCategoryId === category.id }]"
         >
             {{ category.name }}
@@ -34,10 +34,11 @@ onMounted(async () => {
 })
 
 const emit = defineEmits(['update:categoryId'])
-function handleClick(categoryId) {
+function handleClick(categoryId, event) {
     if (selectedCategoryId.value === categoryId) {
         selectedCategoryId.value = null
         emit('update:categoryId', null)
+        event.target.blur()
     } else {
         selectedCategoryId.value = categoryId
         emit('update:categoryId', categoryId)
