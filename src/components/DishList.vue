@@ -7,9 +7,12 @@
             :title="dish.name"
             :description="dish.description"
             :price="dish.price"
+            :portionSize="dish.portion_size"
+            :categoryId="dish.category_id"
         />
     </div>
 </template>
+
 
 <script setup>
 import DishCard from './DishCard.vue'

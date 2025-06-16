@@ -6,21 +6,8 @@
                 <h3 class="title">{{ title }}</h3>
                 <p class="description">{{ description }}</p>
                 <div class="bottom-info">
+                    <span class="portion"> {{ portionSize }} {{ categoryId === 12 ? 'ml' : 'g' }} </span>
                     <span class="price">{{ price }}₴</span>
-                    <button @click="toggleFavorite" class="favorite-btn" :class="{ active: isFavorite }">
-                        <svg viewBox="0 0 24 24" class="heart-icon" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                                   2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
-                                   C13.09 3.81 14.76 3 16.5 3
-                                   19.58 3 22 5.42 22 8.5
-                                   c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                                fill="none"
-                                stroke="white"
-                                stroke-width="2"
-                            />
-                        </svg>
-                    </button>
                 </div>
             </div>
         </div>
@@ -28,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { computed, watch } from 'vue'
 
 const baseUrl = process.env.VUE_APP_API_URL || 'http://localhost:3000'
 
@@ -37,12 +24,9 @@ const props = defineProps({
     title: String,
     description: String,
     price: Number,
+    portionSize: Number,
+    categoryId: Number,
 })
-
-const isFavorite = ref(false)
-const toggleFavorite = () => {
-    isFavorite.value = !isFavorite.value
-}
 
 const imageSrc = computed(() => {
     if (!props.image) return '/assets/placeholder.png'
@@ -67,17 +51,19 @@ watch(
 
 
 <style scoped lang="scss">
+$color-yellow: #ffc164;
+
 .dish-card {
     position: relative;
-    width: 325px;
-    height: 380px;
+    width: 320px;
+    height: 390px;
     border-radius: 15px;
     overflow: hidden;
 }
 
 .dish-image {
     width: 100%;
-    height: 100%;
+    height: 85%;
     object-fit: cover;
     border-radius: 15px;
 }
@@ -112,12 +98,14 @@ watch(
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: 10px;
+    padding: 0px;
 }
 
-.price {
+.price,
+.portion {
     font-size: 20px;
     font-weight: bold;
+    color: $color-yellow;
 }
 
 .favorite-btn {
