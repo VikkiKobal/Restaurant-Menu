@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
+// import { ref, watchEffect } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
