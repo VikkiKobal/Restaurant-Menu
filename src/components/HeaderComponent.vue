@@ -57,12 +57,12 @@ import { storeToRefs } from 'pinia'
 const userStore = useUserStore()
 const { isLoggedIn, isAdmin, user, token } = storeToRefs(userStore)
 
-watchEffect(() => {
+/* watchEffect(() => {
     console.log('User from store:', user.value)
     console.log('Token from store:', token.value)
     console.log('isLoggedIn:', isLoggedIn.value)
     console.log('isAdmin:', isAdmin.value)
-})
+})*/
 
 const logout = () => {
     userStore.logout()
