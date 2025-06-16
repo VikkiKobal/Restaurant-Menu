@@ -1,5 +1,5 @@
 <template>
-    <header class="header">
+    <header class="header" ref="headerRef">
         <RouterLink to="/" class="logo-text">Cibo gustoso</RouterLink>
 
         <div class="login-desktop">
@@ -49,13 +49,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
-const { isLoggedIn, isAdmin } = storeToRefs(userStore)
+const { isLoggedIn, isAdmin, user, token } = storeToRefs(userStore)
+
+const isOpen = ref(false)
+const headerRef = ref(null)
 
 /* watchEffect(() => {
     console.log('User from store:', user.value)
@@ -69,8 +72,6 @@ const logout = () => {
     closeMenu()
 }
 
-const isOpen = ref(false)
-
 const toggleMenu = () => {
     isOpen.value = !isOpen.value
 }
@@ -78,6 +79,21 @@ const toggleMenu = () => {
 const closeMenu = () => {
     isOpen.value = false
 }
+
+const handleClickOutside = (event) => {
+    const isMobile = window.innerWidth < 1100
+    if (isMobile && isOpen.value && headerRef.value && !headerRef.value.contains(event.target)) {
+        closeMenu()
+    }
+}
+
+onMounted(() => {
+    document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+    document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>

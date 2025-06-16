@@ -6,20 +6,34 @@
         <div class="right-form">
             <div class="header-text">
                 <h1>RESERVATION</h1>
-                <p>
-                    Secure your spot at Cibo gustoso, where exceptional sushi and a <br />remarkable dining experience
-                    await.
-                </p>
+                <p>Reserve your place at Cibo Gustoso, where an unforgettable dining experience awaits you</p>
             </div>
             <form @submit.prevent="handleSubmit">
                 <input type="text" placeholder="Name" v-model="form.name" required autocomplete="name" />
-                <input type="tel" placeholder="Phone Number" v-model="form.phone" required autocomplete="tel" />
+
+                <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    v-model="form.phone"
+                    required
+                    autocomplete="tel"
+                    pattern="^\+?[0-9\s\-()]{10,20}$"
+                />
+
                 <input type="email" placeholder="Email" v-model="form.email" required autocomplete="email" />
 
                 <div class="row-inputs">
-                    <input type="number" placeholder="Guests" v-model="form.guests" min="1" required />
-                    <input type="date" v-model="form.date" required />
-                    <input type="time" v-model="form.time" required />
+                    <input type="number" placeholder="Guests" v-model="form.guests" required min="1" max="300" />
+
+                    <div class="input-group">
+                        <label for="date">Choose a date</label>
+                        <input type="date" id="date" v-model="form.date" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="time">Choose a time</label>
+                        <input type="time" id="time" v-model="form.time" required />
+                    </div>
                 </div>
 
                 <button type="submit">Reserve</button>
@@ -37,7 +51,7 @@ const form = reactive({
     name: '',
     phone: '',
     email: '',
-    guests: 1,
+    guests: '',
     date: '',
     time: '',
 })
@@ -171,6 +185,40 @@ function handleSubmit() {
                     background-color: darken(#ffc164, 10%);
                     transform: scale(1.05);
                 }
+            }
+        }
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        label {
+            font-size: 16px; // більший шрифт
+            margin-bottom: 8px; // більше повітря
+            color: #efe7d2; // як текст у формі
+            font-family: 'Forum', serif;
+        }
+
+        input {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1.5px solid rgba(239, 231, 210, 0.15);
+            background: #111;
+            color: #efe7d2;
+            font-size: 16px;
+            font-family: 'Forum', serif;
+
+            &::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+                cursor: pointer;
+            }
+
+            &:focus {
+                outline: none;
+                border-color: #ffc164;
+                background: #222;
             }
         }
     }

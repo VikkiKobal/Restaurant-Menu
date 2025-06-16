@@ -4,7 +4,7 @@
         <div class="bottom-fade"></div>
         <h1 class="main-heading">Taste the rich flavour of high quality meals</h1>
         <p class="sub-heading">
-            We only use the five star quality for our menu, come and get the richness in every meals we serve.
+            We only use the five star quality for our menu, come and get the richness in every meals we serve
         </p>
         <button class="go-to-menu-btn" @click="scrollToMenu">Go to Menu</button>
     </div>
@@ -14,7 +14,7 @@
         <h1 class="special-heading">Today's Special</h1>
         <p class="special-subheading">
             Special menu oftenly comes different everyday,<br />
-            this is our special food for today.
+            this is our special food for today
         </p>
         <DishList :dishes="specialDishes" />
         <img :src="vectorRight" alt="Right arrow" class="arrow arrow-right" />
@@ -25,7 +25,7 @@
 
     <section class="specialities-text" id="menu" ref="menuSection">
         <h2 class="specialities-heading">Our Specialities</h2>
-        <p class="specialities-subheading">Authentic meals from our restaurant served with high quality ingredients.</p>
+        <p class="specialities-subheading">Authentic meals from our restaurant served with high quality ingredients</p>
         <CategoryFilter v-model:categoryId="selectedCategory" />
         <DishList :dishes="filteredDishes" />
     </section>
@@ -40,11 +40,11 @@
             <img :src="aboutPhoto" alt="Our Story Photo" class="about-photo" />
             <div class="about-text">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat urna id leo euismod
-                    rhoncus. Aliquam erat volutpat. Nulla id aliquam neque, at dignissim quam. Praesent et lacus
-                    accumsan, consequat nisl a, mattis sapien. Nam sodales ullamcorper aliquet. Phasellus ut pretium
-                    libero, vitae imperdiet purus. Sed sed tincidunt velit. Aliquam vitae ipsum molestie, vehicula nisi
-                    quis, finibus leo.
+                    At Cibo Gustoso, we believe that dining is more than just a meal — it’s an experience. From refined
+                    service to carefully crafted dishes, we bring you the essence of Italian elegance and flavor.
+                    Whether it’s a special evening or a casual indulgence, every moment at our restaurant is designed to
+                    delight your senses. Our passion for quality ingredients and authentic recipes ensures every bite is
+                    a celebration of taste. Join us and savor the harmony of tradition and innovation in every dish.
                 </p>
                 <router-link to="/about" class="more-link">More...</router-link>
             </div>
@@ -81,7 +81,7 @@ const menuStore = useMenuStore()
 
 onMounted(() => {
     menuStore.fetchMenu()
-    console.log('Dishes in store:', menuStore.allDishes) 
+    console.log('Dishes in store:', menuStore.allDishes)
 })
 
 onMounted(() => {
@@ -102,11 +102,11 @@ watch(
 const specialDishes = computed(() => menuStore.getSpecialDishes)
 
 const filteredDishes = computed(() => {
-    console.log('Selected category:', selectedCategory.value) 
+    console.log('Selected category:', selectedCategory.value)
     console.log(
         'Filtered dishes:',
         selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
-    ) 
+    )
     return selectedCategory.value ? menuStore.getDishesByCategory(selectedCategory.value) : menuStore.allDishes
 })
 </script>
@@ -284,7 +284,8 @@ $font-button: 'Forum', sans-serif;
 }
 
 .specialities-text {
-    scroll-margin-top: 80px;
+    position: relative;
+    scroll-margin-top: 120px;
     overflow: hidden;
 
     &::before {
@@ -297,6 +298,7 @@ $font-button: 'Forum', sans-serif;
         filter: brightness(0.6) saturate(0.5);
         opacity: 0.85;
         z-index: 0;
+        pointer-events: none;
     }
 
     > * {
@@ -490,6 +492,10 @@ $font-button: 'Forum', sans-serif;
 
     .arrow {
         display: none !important;
+    }
+
+    .specialities-text {
+        scroll-margin-top: 200px !important;
     }
 
     .special-heading {

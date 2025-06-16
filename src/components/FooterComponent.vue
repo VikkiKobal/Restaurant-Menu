@@ -9,11 +9,13 @@
             <div class="contact-row">
                 <div class="contact-item">
                     <img src="@/assets/location.png" alt="Address" class="icon" />
-                    <span>Uzhhorod, 14 Universytetska Street</span>
+                    <a href="https://www.google.com/maps?q=48.6215,22.2879" target="_blank"
+                        >Uzhhorod, 14 Universytetska Street</a
+                    >
                 </div>
                 <div class="contact-item">
                     <img src="@/assets/call.png" alt="Phone" class="icon" />
-                    <span>+380 67 123 45 67</span>
+                    <a href="tel:+380999999999">+38 (099) 999 99 99</a>
                 </div>
             </div>
 
@@ -102,12 +104,21 @@ $color-yellow: #ffc164;
     font-size: 20px;
     color: white;
 }
+.contact-item a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-item a:hover {
+    color: $color-yellow;
+}
 
 .icon {
     width: 30px;
     height: 40px;
     filter: brightness(0) saturate(100%) invert(78%) sepia(37%) saturate(436%) hue-rotate(351deg) brightness(101%)
-        contrast(101%); 
+        contrast(101%);
 }
 
 .socials {
@@ -167,15 +178,14 @@ $color-yellow: #ffc164;
     }
 }
 
-
 @media (max-width: 600px) {
     .footer {
-        min-height: 400px; 
+        min-height: 400px;
         padding: 40px 15px;
     }
 
     .footer-text {
-        font-size: 32px; 
+        font-size: 32px;
         margin-bottom: 25px;
     }
 
@@ -206,18 +216,18 @@ $color-yellow: #ffc164;
 
 @media (max-width: 400px) {
     .footer {
-        min-height: 350px; 
+        min-height: 350px;
         padding: 30px 10px;
     }
 
     .footer-text {
-        font-size: 28px; 
+        font-size: 28px;
         margin-bottom: 20px;
     }
 
     .contact-row {
         gap: 15px;
-        flex-direction: column; 
+        flex-direction: column;
     }
 
     .contact-item {

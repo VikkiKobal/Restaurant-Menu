@@ -9,14 +9,15 @@
                 <div class="content">
                     <div class="intro-section">
                         <div class="intro-text">
-                            <h2>Sushi Artistry Redefined</h2>
+                            <h2>Cibo Gustoso - Pure Taste</h2>
                             <p>
-                                Where culinary craftsmanship meets modern elegance. Indulge in the finest sushi,
-                                expertly curated to elevate your dining experience.
+                                Experience a perfect blend of authentic flavors and warm hospitality in a stylish and
+                                inviting atmosphere. At Cibo Gustoso, every dish is crafted with passion and the finest
+                                ingredients to delight your senses.
                             </p>
                         </div>
                         <div class="intro-photo">
-                            <img src="@/assets/about1.png" alt="Intro Sushi" />
+                            <img src="@/assets/about1.png" alt="Intro Dish" />
                         </div>
                     </div>
 
@@ -34,9 +35,10 @@
                         <div class="story-text">
                             <h2>Our Story</h2>
                             <p>
-                                Founded with a passion for culinary excellence, Qitchen's journey began in the heart of
-                                Prague. Over years, it evolved into a haven for sushi enthusiasts, celebrated for its
-                                artful mastery and devotion to redefining gastronomy.
+                                Born from a love for exceptional cuisine and memorable experiences, Cibo Gustoso has
+                                grown into a cherished destination for food lovers seeking both innovation and
+                                tradition. We pride ourselves on delivering impeccable service, unforgettable flavors,
+                                and a welcoming ambiance that feels like home.
                             </p>
                         </div>
                     </div>
@@ -47,6 +49,7 @@
         </div>
     </div>
 </template>
+
 
 <script setup>
 import Footer from '@/components/FooterComponent.vue'
