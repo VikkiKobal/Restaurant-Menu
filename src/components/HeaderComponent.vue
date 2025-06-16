@@ -49,13 +49,13 @@
 </template>
 
 <script setup>
-// import { ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
-const { isLoggedIn, isAdmin, user, token } = storeToRefs(userStore)
+const { isLoggedIn, isAdmin } = storeToRefs(userStore)
 
 /* watchEffect(() => {
     console.log('User from store:', user.value)
