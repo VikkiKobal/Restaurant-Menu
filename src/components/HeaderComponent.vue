@@ -49,13 +49,13 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
-const { isLoggedIn, isAdmin, user, token } = storeToRefs(userStore)
+// const { isLoggedIn, isAdmin } = storeToRefs(userStore)
 
 const isOpen = ref(false)
 const headerRef = ref(null)
