@@ -1,11 +1,10 @@
 <template>
     <div class="category-filter">
         <button
-            v-for="(category, index) in filteredCategories"
+            v-for="category in filteredCategories"
             :key="category.id"
-            @click="handleClick(category.id, index)"
+            @click="handleClick(category.id)"
             :class="['filter-button', { active: selectedCategoryId === category.id }]"
-            ref="filterButtons"
         >
             {{ category.name }}
         </button>
@@ -19,7 +18,6 @@ import axios from 'axios'
 const categories = ref([])
 const error = ref(null)
 const selectedCategoryId = ref(null)
-const filterButtons = ref([])
 
 const filteredCategories = computed(() => categories.value.filter((category) => category.name !== 'Specialities'))
 
@@ -35,19 +33,16 @@ onMounted(async () => {
 
 const emit = defineEmits(['update:categoryId'])
 
-function handleClick(categoryId, index) {
+function handleClick(categoryId) {
     if (selectedCategoryId.value === categoryId) {
         selectedCategoryId.value = null
         emit('update:categoryId', null)
-
-        filterButtons.value[index]?.blur()
     } else {
         selectedCategoryId.value = categoryId
         emit('update:categoryId', categoryId)
     }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .category-filter {
