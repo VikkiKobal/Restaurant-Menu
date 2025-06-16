@@ -27,7 +27,9 @@
         <h2 class="specialities-heading">Our Specialities</h2>
         <p class="specialities-subheading">Authentic meals from our restaurant served with high quality ingredients</p>
         <CategoryFilter v-model:categoryId="selectedCategory" />
-        <DishList :dishes="filteredDishes" />
+        <div ref="dishesListRef">
+            <DishList :dishes="filteredDishes" />
+        </div>
     </section>
 
     <section class="about-section">
@@ -64,13 +66,13 @@ import vectorRight from '@/assets/Vector 1.png'
 import kitchenImage from '@/assets/kitchen.png'
 import aboutPhoto from '@/assets/about-photo.png'
 
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useMenuStore } from '@/store/menuStore'
 import { useRoute } from 'vue-router'
-import { watch } from 'vue'
 
 const menuSection = ref(null)
 const route = useRoute()
+const dishesListRef = ref(null)
 
 function scrollToMenu() {
     menuSection.value?.scrollIntoView({ behavior: 'smooth' })
@@ -98,6 +100,12 @@ watch(
         }
     }
 )
+
+watch(selectedCategory, (newVal) => {
+    if (newVal && dishesListRef.value) {
+        dishesListRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+})
 
 const specialDishes = computed(() => menuStore.getSpecialDishes)
 
